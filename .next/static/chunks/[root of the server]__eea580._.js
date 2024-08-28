@@ -8089,9 +8089,9 @@ class Router {
         };
         if ("TURBOPACK compile-time truthy", 1) {
             const { BloomFilter } = __turbopack_require__("[project]/node_modules/next/dist/shared/lib/bloom-filter.js [client] (ecmascript)");
-            const routerFilterSValue = ("TURBOPACK compile-time value", JSON.parse('{"numItems":7,"errorRate":0.0001,"numBits":135,"numHashes":14,"bitArray":[1,1,1,1,1,1,0,1,1,1,1,0,1,1,0,0,0,0,0,0,1,1,1,1,1,1,1,0,1,0,1,0,0,1,0,1,0,0,1,0,0,1,0,1,0,1,1,0,1,0,0,1,0,0,1,0,0,1,1,1,1,0,1,0,1,1,1,0,0,0,0,0,0,0,1,1,1,1,0,0,1,1,1,0,1,1,0,1,0,0,0,1,0,0,1,1,1,1,0,1,0,0,0,0,1,1,0,0,1,1,0,0,0,1,0,1,1,1,0,0,0,1,0,0,1,1,1,1,1,1,0,1,0,0,0]}'));
+            const routerFilterSValue = ("TURBOPACK compile-time value", JSON.parse('{"numItems":12,"errorRate":0.0001,"numBits":231,"numHashes":14,"bitArray":[0,1,0,0,1,1,0,1,0,1,0,1,0,0,0,1,1,0,0,0,1,1,1,1,0,0,0,1,0,0,0,0,0,0,1,0,1,0,0,1,1,0,1,0,1,1,1,0,0,1,1,1,1,1,0,0,0,0,1,0,0,0,0,1,1,0,0,1,0,0,1,0,0,0,0,0,1,0,1,1,1,0,0,0,0,1,1,0,0,0,1,1,0,1,1,1,1,1,0,0,0,1,0,0,1,0,0,1,0,1,1,1,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,0,1,0,1,1,0,1,0,0,0,0,1,0,1,1,1,0,1,0,1,1,1,1,0,0,1,1,1,0,1,0,0,1,0,1,0,0,1,0,1,1,1,0,0,1,0,0,0,1,1,1,1,0,1,0,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,0,1,0,0,0,1,0,0,1,0,0,1,0,0,0,1,0,1,0,1,0,0,1,0,1,1,0,1]}'));
             const staticFilterData = routerFilterSValue ? routerFilterSValue : undefined;
-            const routerFilterDValue = ("TURBOPACK compile-time value", JSON.parse('{"numItems":0,"errorRate":0.0001,"numBits":0,"numHashes":null,"bitArray":[]}'));
+            const routerFilterDValue = ("TURBOPACK compile-time value", JSON.parse('{"numItems":2,"errorRate":0.0001,"numBits":39,"numHashes":14,"bitArray":[1,1,1,0,1,0,0,1,1,1,0,1,1,1,1,0,1,0,1,0,0,0,0,0,0,1,0,0,1,0,0,0,0,1,0,1,0,0,0]}'));
             const dynamicFilterData = routerFilterDValue ? routerFilterDValue : undefined;
             if (staticFilterData == null ? void 0 : staticFilterData.numHashes) {
                 this._bfl_s = new BloomFilter(staticFilterData.numItems, staticFilterData.errorRate);

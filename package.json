@@ -10,8 +10,13 @@
 	},
 	"dependencies": {
 		"@heroicons/react": "^2.1.5",
+		"@hookform/resolvers": "^3.9.0",
+		"@internationalized/date": "^3.5.5",
 		"@nextui-org/button": "2.0.37",
+		"@nextui-org/card": "^2.0.33",
+		"@nextui-org/checkbox": "^2.1.4",
 		"@nextui-org/code": "2.0.32",
+		"@nextui-org/date-picker": "^2.1.6",
 		"@nextui-org/input": "2.2.4",
 		"@nextui-org/kbd": "2.0.33",
 		"@nextui-org/link": "2.0.34",
@@ -24,12 +29,15 @@
 		"@react-aria/ssr": "3.9.4",
 		"@react-aria/visually-hidden": "3.8.12",
 		"clsx": "2.1.1",
+		"date-fns": "^3.6.0",
 		"framer-motion": "~11.1.1",
 		"intl-messageformat": "^10.5.0",
 		"next": "14.2.4",
 		"next-themes": "^0.2.1",
 		"react": "18.3.1",
-		"react-dom": "18.3.1"
+		"react-dom": "18.3.1",
+		"react-hook-form": "^7.53.0",
+		"zod": "^3.23.8"
 	},
 	"devDependencies": {
 		"@types/node": "20.5.7",

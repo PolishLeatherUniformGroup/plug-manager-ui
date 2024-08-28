@@ -1,9 +1,9 @@
-import { title } from "@/components/primitives";
+import ApplyForm from "../../components/join/apply-form";
 
 export default function AboutPage() {
     return (
         <div>
-            <h1 className={title()}>Deklaracja członkowska</h1>
+            <ApplyForm />
         </div>
     );
 }
