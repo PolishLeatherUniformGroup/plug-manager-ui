@@ -1,3 +1,4 @@
+'use client';
 import {
   Navbar as NextUINavbar,
   NavbarContent,
@@ -5,12 +6,9 @@ import {
   NavbarMenuToggle,
   NavbarBrand,
   NavbarItem,
-  NavbarMenuItem,
 } from "@nextui-org/navbar";
 import { Button } from "@nextui-org/button";
-import { Kbd } from "@nextui-org/kbd";
 import { Link } from "@nextui-org/link";
-import { Input } from "@nextui-org/input";
 import { link as linkStyles } from "@nextui-org/theme";
 import NextLink from "next/link";
 import clsx from "clsx";
@@ -21,32 +19,47 @@ import {
   TwitterIcon,
   GithubIcon,
   DiscordIcon,
-  HeartFilledIcon,
-  SearchIcon,
   Logo,
 } from "@/components/icons";
+import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from "@nextui-org/dropdown";
+import { User } from "@nextui-org/user";
+import { useUser } from "@auth0/nextjs-auth0/client";
+import { getSession } from "@auth0/nextjs-auth0";
 
 export const Navbar = () => {
-  const searchInput = (
-    <Input
-      aria-label="Search"
-      classNames={{
-        inputWrapper: "bg-default-100",
-        input: "text-sm",
-      }}
-      endContent={
-        <Kbd className="hidden lg:inline-block" keys={["command"]}>
-          K
-        </Kbd>
-      }
-      labelPlacement="outside"
-      placeholder="Search..."
-      startContent={
-        <SearchIcon className="text-base text-default-400 pointer-events-none flex-shrink-0" />
-      }
-      type="search"
-    />
-  );
+  const { user, error, isLoading } = useUser();
+
+  const userMenu = (<>
+    <Dropdown placement="bottom-start">
+      <DropdownTrigger>
+        <User
+          as="button"
+          avatarProps={{
+            isBordered: true,
+            src: `${user?.picture}`,
+          }}
+          className="transition-transform"
+          description={user?.nickname}
+          name={user?.name}
+        />
+      </DropdownTrigger>
+      <DropdownMenu aria-label="User Actions" variant="flat">
+        <DropdownItem key="profile" className="h-14 gap-2">
+          <p className="font-bold">Zalogowany jako</p>
+          <p className="font-bold">{user?.nickname}</p>
+        </DropdownItem>
+        <DropdownItem key="settings">
+          Ustawienia
+        </DropdownItem>
+        <DropdownItem key="team_settings">Członkostwo</DropdownItem>
+        <DropdownItem key="analytics">
+          Wiadomości
+        </DropdownItem>
+        <DropdownItem key="logout" color="danger" as={Link} href="/api/auth/logout">
+          Wyloguj się
+        </DropdownItem>
+      </DropdownMenu>
+    </Dropdown></>);
 
   return (
     <NextUINavbar maxWidth="xl" position="sticky">
@@ -91,7 +104,7 @@ export const Navbar = () => {
           </Link>
           <ThemeSwitch />
         </NavbarItem>
-        <NavbarItem className="hidden lg:flex">{searchInput}</NavbarItem>
+        <NavbarItem className="hidden lg:flex">{user ? userMenu : <Button as={Link} href="/api/auth/login">Zaloguj się</Button>}</NavbarItem>
       </NavbarContent>
 
       <NavbarContent className="sm:hidden basis-1 pl-4" justify="end">
@@ -100,7 +113,7 @@ export const Navbar = () => {
       </NavbarContent>
 
       <NavbarMenu>
-        {searchInput}
+        {user ? userMenu : <Button as={Link} href="/api/auth/login">Zaloguj się</Button>}
       </NavbarMenu>
     </NextUINavbar>
   );
