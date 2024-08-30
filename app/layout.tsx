@@ -33,12 +33,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    
+
     <html suppressHydrationWarning lang="en">
       <head />
       <body
         className={clsx(
-          "min-h-screen bg-background font-sans antialiased",
+          "min-h-screen bg-default-100 font-sans antialiased",
           fontSans.variable,
         )}
       >
