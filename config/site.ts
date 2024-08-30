@@ -9,20 +9,12 @@ export const siteConfig = {
       href: "/",
     },
     {
-      label: "O nas",
+      label: "Stowarzyszenie",
       href: "/about",
-    },
-    {
-      label: "Kontakt",
-      href: "/contact",
     },
     {
       label: "Strefa członka",
       href: "/members",
-    },
-    {
-      label: "Administracja",
-      href: "/admin",
     },
     {
       label: "Wydarzenia",
