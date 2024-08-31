@@ -60,6 +60,9 @@ export const Navbar = () => {
         <DropdownItem key="analytics">
           Wiadomości
         </DropdownItem>
+        <DropdownItem key="admin">
+          <NextLink href="/admin"> Zarządzanie</NextLink>
+        </DropdownItem>
         <DropdownItem key="logout" color="danger" as={Link} href="/api/auth/logout">
           Wyloguj się
         </DropdownItem>

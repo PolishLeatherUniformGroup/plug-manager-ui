@@ -43,13 +43,13 @@ export default function RootLayout({
         )}
       >
         <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
-          <div className="relative flex flex-col h-screen">
+          <div className="relative flex flex-col min-h-dvh">
             <Navbar />
-            <main className="container mx-auto max-w-7xl pt-8 px-6 flex-grow">
+            <main className="container mx-auto max-w-7xl px-6 flex-grow">
               {children}
             </main>
             <footer className="w-full flex items-center justify-center py-3">
-              <p className="text-primary">&copy; Polish Leather Uniform Group</p>
+              <p className="text-default">&copy; Polish Leather Uniform Group</p>
             </footer>
           </div>
         </Providers>
