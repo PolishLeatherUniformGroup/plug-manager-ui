@@ -9,7 +9,6 @@ import {
 } from "@nextui-org/navbar";
 import { Button } from "@nextui-org/button";
 import { Link } from "@nextui-org/link";
-import { link as linkStyles } from "@nextui-org/theme";
 import NextLink from "next/link";
 import clsx from "clsx";
 
@@ -23,15 +22,26 @@ import {
 } from "@/components/icons";
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from "@nextui-org/dropdown";
 import { User } from "@nextui-org/user";
-import { useUser } from "@auth0/nextjs-auth0/client";
-import { getSession } from "@auth0/nextjs-auth0";
-import { ChevronDownIcon } from "@heroicons/react/24/outline";
+import { UserProfile, useUser } from "@auth0/nextjs-auth0/client";
 import { useRouter } from "next/navigation";
+import { ChevronDownIcon } from "@heroicons/react/24/outline";
+
+
 
 export const Navbar = () => {
   const { user, error, isLoading } = useUser();
   const router = useRouter();
-
+  const userInRole = (role: string, user?: UserProfile): boolean => {
+    if (!user) {
+      return false;
+    }
+    const roles = user["https://plug.org.pl/roles"];
+    if (roles) {
+      return (roles as string[]).includes(role);
+    } else {
+      return false;
+    }
+  }
   const userMenu = (<>
     <Dropdown placement="bottom-start">
       <DropdownTrigger>
@@ -48,25 +58,38 @@ export const Navbar = () => {
           name={user?.name}
         />
       </DropdownTrigger>
-      <DropdownMenu aria-label="User Actions" variant="flat">
-        <DropdownItem key="profile" className="h-14 gap-2">
-          <p className="font-bold">Zalogowany jako</p>
-          <p className="font-bold">{user?.nickname}</p>
-        </DropdownItem>
-        <DropdownItem key="settings">
-          Ustawienia
-        </DropdownItem>
-        <DropdownItem key="team_settings">Członkostwo</DropdownItem>
-        <DropdownItem key="analytics">
-          Wiadomości
-        </DropdownItem>
-        <DropdownItem key="admin">
-          <NextLink href="/admin"> Zarządzanie</NextLink>
-        </DropdownItem>
-        <DropdownItem key="logout" color="danger" as={Link} href="/api/auth/logout">
-          Wyloguj się
-        </DropdownItem>
-      </DropdownMenu>
+
+
+      {
+        userInRole("board", user) ? (
+          <DropdownMenu aria-label="User Actions" variant="flat">
+            <DropdownItem key="profile" className="h-14 gap-2" as={NextLink} href="/profile">
+              <p className="font-bold">Zalogowany jako</p>
+              <p className="font-bold">{user?.nickname}</p>
+            </DropdownItem>
+            <DropdownItem key="analytics">
+              Wiadomości
+            </DropdownItem>
+            <DropdownItem key="admin">
+              <NextLink href="/admin"> Zarządzanie</NextLink>
+            </DropdownItem>
+            <DropdownItem key="logout" color="danger" as={Link} href="/api/auth/logout">
+              Wyloguj się
+            </DropdownItem>
+          </DropdownMenu>) : (
+          <DropdownMenu aria-label="User Actions" variant="flat">
+            <DropdownItem key="profile" className="h-14 gap-2">
+              <p className="font-bold">Zalogowany jako</p>
+              <p className="font-bold">{user?.nickname}</p>
+            </DropdownItem>
+            <DropdownItem key="analytics">
+              Wiadomości
+            </DropdownItem>
+            <DropdownItem key="logout" color="danger" as={Link} href="/api/auth/logout">
+              Wyloguj się
+            </DropdownItem>
+          </DropdownMenu>)
+      }
     </Dropdown></>);
 
   const navbarItem = (item: any) => (<NavbarItem key={item.href}>
@@ -86,10 +109,12 @@ export const Navbar = () => {
       <NavbarItem className="cursor-pointer">
         <DropdownTrigger>
           <Link
+
             className={clsx(
               "text-inherit data-[active=true]:text-primary data-[active=true]:font-bold cursor-pointer",
             )} >
             {item.label}
+            <ChevronDownIcon className="w-5 h-5 text-inherit" />
           </Link>
         </DropdownTrigger>
       </NavbarItem>

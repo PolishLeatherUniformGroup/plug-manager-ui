@@ -1,7 +1,17 @@
-export default function AdminMembers() {
+'use server';
+
+import { getSession, withPageAuthRequired } from "@auth0/nextjs-auth0";
+import UsersTable from "../../../components/admin/users-table";
+
+
+
+const AdminMembers = async () => {
+    const session = await getSession();
     return (
-        <div>
-            <h1>Członkowie</h1>
-        </div>
+        <UsersTable />
     );
 };
+
+const getServerSideProps = withPageAuthRequired();
+
+export default withPageAuthRequired(AdminMembers, { });
