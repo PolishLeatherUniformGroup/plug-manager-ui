@@ -1,11 +1,10 @@
-export type Member = {
+export type MemberView = {
     id: string;
     card: string;
     name: string;
     email: string;
-    date: string;
+    joinDate: string;
     status: string;
-    fee: string;
 };
 
 export const statusOptions = [
@@ -25,10 +24,9 @@ export const feeOptions = [
 
 export const columns = [
     { name: "ID", uid: "id", sortable: true },
-    { name: "$", uid: "fee", sortable: true },
     { name: "Nr karty", uid: "card", sortable: true },
     { name: "Członek", uid: "name", sortable: true },
-    { name: "Data dołączenia", uid: "date", sortable: true },
+    { name: "Data dołączenia", uid: "joinDate", sortable: true },
     { name: "Status", uid: "status", sortable: true },
     { name: "Akcje", uid: "actions" },
 ];

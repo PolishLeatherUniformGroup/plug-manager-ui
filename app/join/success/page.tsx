@@ -1,4 +1,4 @@
-export const ApplySuccessPage = () => {
+export default function ApplySuccessPage() {
     return (
         <div>
             <h1>Gratulacje!</h1>

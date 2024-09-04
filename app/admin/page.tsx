@@ -1,5 +1,5 @@
 import { withPageAuthRequired } from "@auth0/nextjs-auth0";
-import MetricCard from "../../components/admin/metric";
+import MetricCard from "../../components/admin/dashboard/metric";
 import { UserGroupIcon } from "@heroicons/react/24/solid";
 import { BanknotesIcon, DocumentArrowDownIcon, EnvelopeIcon } from "@heroicons/react/24/outline";
 

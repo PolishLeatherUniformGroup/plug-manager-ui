@@ -77,7 +77,7 @@ export default function ApplyForm() {
     }
 
     return (
-        <Card className="p-8">
+        <Card className="p-8 mt-4">
             <form className="col-span-6" onSubmit={handleSubmit(onSubmit)}>
                 <div>
                     <h1 className={title()}>Deklaracja członkowska</h1>

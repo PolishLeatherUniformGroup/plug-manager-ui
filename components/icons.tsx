@@ -23,71 +23,18 @@ export const Logo: React.FC<IconSvgProps> = ({
     />
   </svg>
 );
+export const FacebookIcon: React.FC<IconSvgProps> = ({ className
+}) => (<svg className={className} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" id="Facebook-Logo-2--Streamline-Logos-Block" ><desc>{"Facebook Logo 2 Streamline Icon: https://streamlinehq.com"}</desc><path fill="#000000" fillRule="evenodd" d="M5 1a4 4 0 0 0 -4 4v14a4 4 0 0 0 4 4h14a4 4 0 0 0 4 -4V5a4 4 0 0 0 -4 -4H5Zm4.682 6.273A3.273 3.273 0 0 1 12.954 4h2.91c0.2 0 0.363 0.163 0.363 0.364v2.909c0 0.2 -0.163 0.363 -0.363 0.363h-1.455a1.09 1.09 0 0 0 -1.09 1.091v1.091h2.545a0.364 0.364 0 0 1 0.352 0.452l-0.727 2.91a0.363 0.363 0 0 1 -0.353 0.274h-1.818v6.182a0.364 0.364 0 0 1 -0.364 0.364h-2.909a0.364 0.364 0 0 1 -0.363 -0.364v-6.181H7.864a0.364 0.364 0 0 1 -0.364 -0.364v-2.91c0 -0.2 0.163 -0.363 0.364 -0.363h1.818V7.273Z" clipRule="evenodd" strokeWidth={1} />
+</svg>)
 
-export const DiscordIcon: React.FC<IconSvgProps> = ({
-  size = 24,
-  width,
-  height,
-  ...props
-}) => {
-  return (
-    <svg
-      height={size || height}
-      viewBox="0 0 24 24"
-      width={size || width}
-      {...props}
-    >
-      <path
-        d="M14.82 4.26a10.14 10.14 0 0 0-.53 1.1 14.66 14.66 0 0 0-4.58 0 10.14 10.14 0 0 0-.53-1.1 16 16 0 0 0-4.13 1.3 17.33 17.33 0 0 0-3 11.59 16.6 16.6 0 0 0 5.07 2.59A12.89 12.89 0 0 0 8.23 18a9.65 9.65 0 0 1-1.71-.83 3.39 3.39 0 0 0 .42-.33 11.66 11.66 0 0 0 10.12 0q.21.18.42.33a10.84 10.84 0 0 1-1.71.84 12.41 12.41 0 0 0 1.08 1.78 16.44 16.44 0 0 0 5.06-2.59 17.22 17.22 0 0 0-3-11.59 16.09 16.09 0 0 0-4.09-1.35zM8.68 14.81a1.94 1.94 0 0 1-1.8-2 1.93 1.93 0 0 1 1.8-2 1.93 1.93 0 0 1 1.8 2 1.93 1.93 0 0 1-1.8 2zm6.64 0a1.94 1.94 0 0 1-1.8-2 1.93 1.93 0 0 1 1.8-2 1.92 1.92 0 0 1 1.8 2 1.92 1.92 0 0 1-1.8 2z"
-        fill="currentColor"
-      />
-    </svg>
-  );
-};
+export const XIcon: React.FC<IconSvgProps> = ({ className
+}) => (<svg className={className} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" id="X-Twitter-Logo--Streamline-Logos"  ><desc>{"X Logo Twitter Streamline Icon: https://streamlinehq.com"}</desc><path stroke="#000000" strokeLinecap="round" strokeLinejoin="round" d="M17.2705 22.464 1.5 1.53589h5.22951L22.5 22.464h-5.2295Z" strokeWidth={1} /><path stroke="#000000" strokeLinecap="round" strokeLinejoin="round" d="m21.7578 1.53589 -8.313 8.91461" strokeWidth={1} /><path stroke="#000000" strokeLinecap="round" strokeLinejoin="round" d="m2.24207 22.464 8.30673 -8.9078" strokeWidth={1} />
+</svg>)
 
-export const TwitterIcon: React.FC<IconSvgProps> = ({
-  size = 24,
-  width,
-  height,
-  ...props
-}) => {
-  return (
-    <svg
-      height={size || height}
-      viewBox="0 0 24 24"
-      width={size || width}
-      {...props}
-    >
-      <path
-        d="M19.633 7.997c.013.175.013.349.013.523 0 5.325-4.053 11.461-11.46 11.461-2.282 0-4.402-.661-6.186-1.809.324.037.636.05.973.05a8.07 8.07 0 0 0 5.001-1.721 4.036 4.036 0 0 1-3.767-2.793c.249.037.499.062.761.062.361 0 .724-.05 1.061-.137a4.027 4.027 0 0 1-3.23-3.953v-.05c.537.299 1.16.486 1.82.511a4.022 4.022 0 0 1-1.796-3.354c0-.748.199-1.434.548-2.032a11.457 11.457 0 0 0 8.306 4.215c-.062-.3-.1-.611-.1-.923a4.026 4.026 0 0 1 4.028-4.028c1.16 0 2.207.486 2.943 1.272a7.957 7.957 0 0 0 2.556-.973 4.02 4.02 0 0 1-1.771 2.22 8.073 8.073 0 0 0 2.319-.624 8.645 8.645 0 0 1-2.019 2.083z"
-        fill="currentColor"
-      />
-    </svg>
-  );
-};
+export const InstagramIcon: React.FC<IconSvgProps> = ({ className
+}) => (<svg className={className} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" id="Instagram-Logo-2--Streamline-Logos" ><desc>{"Instagram Logo 2 Streamline Icon: https://streamlinehq.com"}</desc><path fill="#000000" fillRule="evenodd" d="M7.5 0.75A6.75 6.75 0 0 0 0.75 7.5v9a6.75 6.75 0 0 0 6.75 6.75h9a6.75 6.75 0 0 0 6.75 -6.75v-9A6.75 6.75 0 0 0 16.5 0.75h-9ZM2.25 7.5c0 -2.9 2.35 -5.25 5.25 -5.25h9c2.9 0 5.25 2.35 5.25 5.25v9c0 2.9 -2.35 5.25 -5.25 5.25h-9a5.25 5.25 0 0 1 -5.25 -5.25v-9ZM19.5 6.25a1.25 1.25 0 1 1 -2.5 0 1.25 1.25 0 0 1 2.5 0ZM12 7.75a4.25 4.25 0 1 0 0 8.5 4.25 4.25 0 0 0 0 -8.5ZM6.25 12a5.75 5.75 0 1 1 11.5 0 5.75 5.75 0 0 1 -11.5 0Z" clipRule="evenodd" strokeWidth={1} />
+</svg>)
 
-export const GithubIcon: React.FC<IconSvgProps> = ({
-  size = 24,
-  width,
-  height,
-  ...props
-}) => {
-  return (
-    <svg
-      height={size || height}
-      viewBox="0 0 24 24"
-      width={size || width}
-      {...props}
-    >
-      <path
-        clipRule="evenodd"
-        d="M12.026 2c-5.509 0-9.974 4.465-9.974 9.974 0 4.406 2.857 8.145 6.821 9.465.499.09.679-.217.679-.481 0-.237-.008-.865-.011-1.696-2.775.602-3.361-1.338-3.361-1.338-.452-1.152-1.107-1.459-1.107-1.459-.905-.619.069-.605.069-.605 1.002.07 1.527 1.028 1.527 1.028.89 1.524 2.336 1.084 2.902.829.091-.645.351-1.085.635-1.334-2.214-.251-4.542-1.107-4.542-4.93 0-1.087.389-1.979 1.024-2.675-.101-.253-.446-1.268.099-2.64 0 0 .837-.269 2.742 1.021a9.582 9.582 0 0 1 2.496-.336 9.554 9.554 0 0 1 2.496.336c1.906-1.291 2.742-1.021 2.742-1.021.545 1.372.203 2.387.099 2.64.64.696 1.024 1.587 1.024 2.675 0 3.833-2.33 4.675-4.552 4.922.355.308.675.916.675 1.846 0 1.334-.012 2.41-.012 2.737 0 .267.178.577.687.479C19.146 20.115 22 16.379 22 11.974 22 6.465 17.535 2 12.026 2z"
-        fill="currentColor"
-        fillRule="evenodd"
-      />
-    </svg>
-  );
-};
 
 export const MoonFilledIcon = ({
   size = 24,

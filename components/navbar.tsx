@@ -11,13 +11,9 @@ import { Button } from "@nextui-org/button";
 import { Link } from "@nextui-org/link";
 import NextLink from "next/link";
 import clsx from "clsx";
-
 import { siteConfig } from "@/config/site";
 import { ThemeSwitch } from "@/components/theme-switch";
 import {
-  TwitterIcon,
-  GithubIcon,
-  DiscordIcon,
   Logo,
 } from "@/components/icons";
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from "@nextui-org/dropdown";
@@ -25,10 +21,15 @@ import { User } from "@nextui-org/user";
 import { UserProfile, useUser } from "@auth0/nextjs-auth0/client";
 import { useRouter } from "next/navigation";
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
+import { features } from '../config/features';
 
+interface NavbarProps {
+  features: {
+    [key: string]: boolean;
+  }
+}
 
-
-export const Navbar = () => {
+export const Navbar = (props: NavbarProps) => {
   const { user, error, isLoading } = useUser();
   const router = useRouter();
   const userInRole = (role: string, user?: UserProfile): boolean => {
@@ -63,17 +64,17 @@ export const Navbar = () => {
       {
         userInRole("board", user) ? (
           <DropdownMenu aria-label="User Actions" variant="flat">
-            <DropdownItem key="profile" className="h-14 gap-2" as={NextLink} href="/profile">
+            <DropdownItem key="b-profile" className="h-14 gap-2" as={NextLink} href="/profile">
               <p className="font-bold">Zalogowany jako</p>
               <p className="font-bold">{user?.nickname}</p>
             </DropdownItem>
-            <DropdownItem key="analytics">
+            <DropdownItem key="b-messages">
               Wiadomości
             </DropdownItem>
-            <DropdownItem key="admin">
+            <DropdownItem key="b-admin">
               <NextLink href="/admin"> Zarządzanie</NextLink>
             </DropdownItem>
-            <DropdownItem key="logout" color="danger" as={Link} href="/api/auth/logout">
+            <DropdownItem key="b-logout" color="danger" as={Link} href="/api/auth/logout">
               Wyloguj się
             </DropdownItem>
           </DropdownMenu>) : (
@@ -82,7 +83,7 @@ export const Navbar = () => {
               <p className="font-bold">Zalogowany jako</p>
               <p className="font-bold">{user?.nickname}</p>
             </DropdownItem>
-            <DropdownItem key="analytics">
+            <DropdownItem key="messages">
               Wiadomości
             </DropdownItem>
             <DropdownItem key="logout" color="danger" as={Link} href="/api/auth/logout">
@@ -92,17 +93,19 @@ export const Navbar = () => {
       }
     </Dropdown></>);
 
-  const navbarItem = (item: any) => (<NavbarItem key={item.href}>
-    <NextLink
-      className={clsx(
-        "text-inherit data-[active=true]:text-primary data-[active=true]:font-bold",
-      )}
-      color="foreground"
-      href={item.href}
-    >
-      {item.label}
-    </NextLink>
-  </NavbarItem>);
+  const navbarItem = (item: any) => {
+    return (<NavbarItem key={item.href}>
+      <NextLink
+        className={clsx(
+          "text-inherit data-[active=true]:text-primary data-[active=true]:font-bold",
+        )}
+        color="foreground"
+        href={item.href}
+      >
+        {item.label}
+      </NextLink>
+    </NavbarItem>)
+  };
 
   const navbarDropdownItem = (item: any) => (
     <Dropdown>
@@ -145,8 +148,8 @@ export const Navbar = () => {
   )
 
   return (
-    <NextUINavbar maxWidth="xl" position="sticky" className="bg-primary-700 text-default-100 shadow-md dark:shadow-none
-    dark:bg-transparent dark:text-gray-100" >
+    <NextUINavbar maxWidth="xl" isBlurred={false} position="sticky" className="bg-primary-700 text-default-100 shadow-md dark:bg-background dark:shadow-none
+     dark:text-gray-100" >
       <NavbarContent className="basis-1/5 sm:basis-full text-default-100 dark:text-gray-100" justify="start">
         <NavbarBrand as="li" className="gap-3 max-w-fit">
           <NextLink className="flex justify-start items-center gap-1" href="/">
@@ -159,7 +162,7 @@ export const Navbar = () => {
             if ((item.isProtected && user) || !item.isProtected) {
               if (item.hasMenu) {
                 return navbarDropdownItem(item);
-              } else {
+              } else if (item.feature === undefined || props.features[item.feature] === true) {
                 return navbarItem(item);
               }
             }
@@ -172,15 +175,6 @@ export const Navbar = () => {
         justify="end"
       >
         <NavbarItem className="hidden sm:flex gap-2">
-          <Link isExternal aria-label="Twitter" href={siteConfig.links.twitter}>
-            <TwitterIcon className="text-default-100 dark:text-gray-100" />
-          </Link>
-          <Link isExternal aria-label="Facebook" href={siteConfig.links.facebook}>
-            <DiscordIcon className="text-default-100 dark:text-gray-100" />
-          </Link>
-          <Link isExternal aria-label="Instagream" href={siteConfig.links.instagram}>
-            <GithubIcon className="text-default-100 dark:text-gray-100" />
-          </Link>
           <ThemeSwitch />
         </NavbarItem>
         <NavbarItem className="hidden lg:flex">{user ? userMenu : <Button as={Link} href="/api/auth/login">Zaloguj się</Button>}</NavbarItem>

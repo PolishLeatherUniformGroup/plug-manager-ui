@@ -1,63 +1,29 @@
 'use client';
-import { EllipsisVerticalIcon, ChevronDownIcon, FolderPlusIcon, BanknotesIcon, EnvelopeIcon } from "@heroicons/react/24/outline";
+import { EllipsisVerticalIcon, ChevronDownIcon, FolderPlusIcon, BanknotesIcon, EnvelopeIcon, PlusIcon } from "@heroicons/react/24/outline";
 import { Button, ButtonGroup } from "@nextui-org/button";
-import { Chip, ChipProps } from "@nextui-org/chip";
+import { Chip } from "@nextui-org/chip";
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from "@nextui-org/dropdown";
 import { Pagination } from "@nextui-org/pagination";
 import { SortDescriptor, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from "@nextui-org/table";
 import { User } from "@nextui-org/user";
-import React, { useState, useEffect, ReactNode } from "react";
-import { columns, statusOptions } from "../../app/admin/applicants/data";
-import { Member, feeOptions } from "../../app/admin/members/data";
+import React, { useState } from "react";
+import { columns, languagOptions, SectionView } from "../../../app/admin/cms/sections/data";
 import { Selection } from "@nextui-org/react";
-import CheckCircleIcon from "@heroicons/react/24/solid/CheckCircleIcon";
-import ExclamationTriangleIcon from "@heroicons/react/24/solid/ExclamationTriangleIcon";
-import XCircleIcon from "@heroicons/react/24/solid/XCircleIcon";
 import { useRouter } from "next/navigation";
-import { useUser } from "@auth0/nextjs-auth0/client";
 
 export function capitalize(str: string) {
     return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
-const INITIAL_VISIBLE_COLUMNS = ["fee", "card", "name", "status", "actions"];
+const INITIAL_VISIBLE_COLUMNS = ["published", "title", "language", "actions"];
 
-const statusColorMap: Record<string, ChipProps["color"]> = {
-    "0": "success",
-    "2": "warning",
-    "3": "danger",
-    "4": "default",
-    "5": "warning",
-    "6": "danger",
-};
-const feeColorMap: Record<string, ChipProps["color"]> = {
-    "0": "success",
-    "1": "warning",
-    "2": "danger",
-};
-const feeSymbolMap: Record<string, ReactNode> = {
-    "0": <CheckCircleIcon className="w-5 h-5" />,
-    "1": <ExclamationTriangleIcon className="w-5 h-5" />,
-    "2": <XCircleIcon className="w-5 h-5" />,
-};
-export default function UsersTable() {
+
+export default function SectionsTable({ data }: { data: SectionView[] }) {
     const router = useRouter();
-    const [members, setMembers] = useState([] as Member[]);
-
-    useEffect(() => {
-        async function fetchmembers() {
-            let res = await fetch('/api/admin/members')
-            let { data } = await res.json()
-            setMembers(data)
-        }
-        fetchmembers()
-    }, [])
-
     const [filterValue, setFilterValue] = useState("");
     const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set([]));
     const [visibleColumns, setVisibleColumns] = useState<Selection>(new Set(INITIAL_VISIBLE_COLUMNS));
-    const [statusFilter, setStatusFilter] = useState<Selection>("all");
-    const [feeFilter, setFeeFilter] = useState<Selection>("all");
+    const [languageFilter, setLnguageFilter] = useState<Selection>("all");
     const [rowsPerPage, setRowsPerPage] = useState(5);
     const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>({
         column: "date",
@@ -65,7 +31,7 @@ export default function UsersTable() {
     });
     const [page, setPage] = useState(1);
 
-    const pages = Math.ceil(members.length / rowsPerPage);
+    const pages = Math.ceil(data.length / rowsPerPage);
 
     const hasSearchFilter = Boolean(filterValue);
 
@@ -76,21 +42,16 @@ export default function UsersTable() {
     }, [visibleColumns]);
 
     const filteredItems = React.useMemo(() => {
-        let filteredmembers = [...members];
+        let filtereddata = [...data];
 
-        if (statusFilter !== "all" && Array.from(statusFilter).length !== statusOptions.length) {
-            filteredmembers = filteredmembers.filter((member) =>
-                Array.from(statusFilter).includes(member.status),
-            );
-        }
-        if (feeFilter !== "all" && Array.from(feeFilter).length !== feeOptions.length) {
-            filteredmembers = filteredmembers.filter((member) =>
-                Array.from(feeFilter).includes(member.fee),
+        if (languageFilter !== "all" && Array.from(languageFilter).length !== languagOptions.length) {
+            filtereddata = filtereddata.filter((section) =>
+                Array.from(languageFilter).includes(section.language),
             );
         }
 
-        return filteredmembers;
-    }, [members, statusFilter, feeFilter]);
+        return filtereddata;
+    }, [data, languageFilter]);
     const items = React.useMemo(() => {
         const start = (page - 1) * rowsPerPage;
         const end = start + rowsPerPage;
@@ -99,71 +60,36 @@ export default function UsersTable() {
     }, [page, filteredItems, rowsPerPage]);
 
     const sortedItems = React.useMemo(() => {
-        return [...items].sort((a: Member, b: Member) => {
-            const first = a[sortDescriptor.column as keyof Member] as string;
-            const second = b[sortDescriptor.column as keyof Member] as string;
+        return [...items].sort((a: SectionView, b: SectionView) => {
+            const first = a[sortDescriptor.column as keyof SectionView] as string;
+            const second = b[sortDescriptor.column as keyof SectionView] as string;
             const cmp = first < second ? -1 : first > second ? 1 : 0;
 
             return sortDescriptor.direction === "descending" ? -cmp : cmp;
         });
     }, [sortDescriptor, items]);
 
-    const renderCell = React.useCallback((member: Member, columnKey: React.Key) => {
-        const cellValue = member[columnKey as keyof Member];
+    const renderCell = React.useCallback((section: SectionView, columnKey: React.Key) => {
+        const cellValue = section[columnKey as keyof SectionView];
 
         switch (columnKey) {
-            case "card":
+            case "punlished":
+                return (
+                    <p className="text-bold text-small capitalize text-foreground/90">{section.published}</p>
+                );
+            case "tile":
                 return (
                     <p className="text-bold text-small capitalize text-foreground/90">{cellValue}</p>
-                );
-            case "name":
-                return (
-                    <User
-                        avatarProps={{ radius: "full", size: "sm" }}
-                        classNames={{
-                            description: "text-foreground/50",
-                            name: "text-foreground/90",
-                        }}
-                        description={member.email}
-                        name={cellValue}
-                    >
-                        {member.email}
-                    </User>
                 );
             case "date":
                 return (
                     <p className="text-bold text-small capitalize text-foreground/90">{cellValue}</p>
                 );
 
-            case "status":
+            case "language":
                 return (
-                    <Chip
-                        classNames={{
-                            base: "capitalize border-none gap-1 text-forground/90",
-                            dot: "w-4 h-4"
-                        }}
-                        color={statusColorMap[member.status]}
-                        size="sm"
-                        variant="dot"
-                    >
-                        {statusOptions.find((status) => status.uid === cellValue)?.name}
-                    </Chip>
+                    <p className="text-bold text-small capitalize text-foreground/90">{cellValue}</p>
                 );
-            case "fee":
-                return (
-                    <Chip
-                        color={feeColorMap[member.fee]}
-                        classNames={{
-                            base: "bg-transprent",
-                            content: "hidden"
-                        }}
-                        size="sm"
-                        variant="flat"
-                        startContent={feeSymbolMap[member.fee]}
-                    >
-                        {feeOptions.find((fee) => fee.uid === cellValue)?.name}
-                    </Chip>
-                )
             case "actions":
                 return (
                     <div className="relative flex justify-end items-center gap-2">
@@ -174,8 +100,8 @@ export default function UsersTable() {
                                 </Button>
                             </DropdownTrigger>
                             <DropdownMenu>
-                                <DropdownItem onClick={() => { router.push(`/admin/members/${member.id}`) }}>Zarządaj</DropdownItem>
-                                <DropdownItem>Wyślij wiadomość</DropdownItem>
+                                <DropdownItem key="manage" onClick={() => { router.push(`/admin/sections/${section.id}`) }}>Zarządaj</DropdownItem>
+                                <DropdownItem key="message">Wyślij wiadomość</DropdownItem>
                             </DropdownMenu>
                         </Dropdown>
                     </div>
@@ -213,71 +139,35 @@ export default function UsersTable() {
                                     variant="flat"
                                     color="secondary"
                                 >
-                                    Status
+                                    Język
                                 </Button>
                             </DropdownTrigger>
                             <DropdownMenu
                                 disallowEmptySelection
-                                aria-label="Statusy"
+                                aria-label="Języki"
                                 closeOnSelect={false}
-                                selectedKeys={statusFilter}
+                                selectedKeys={languageFilter}
                                 selectionMode="multiple"
-                                onSelectionChange={setStatusFilter}
+                                onSelectionChange={setLnguageFilter}
                             >
-                                {statusOptions.map((status) => (
+                                {languagOptions.map((status) => (
                                     <DropdownItem key={status.uid} className="capitalize">
                                         {capitalize(status.name)}
                                     </DropdownItem>
                                 ))}
                             </DropdownMenu>
                         </Dropdown>
-                        <Dropdown>
-                            <DropdownTrigger className="hidden sm:flex">
-                                <Button
-                                    endContent={<ChevronDownIcon className="text-small h-6 w-6 text-secondary" />}
-                                    size="sm"
-                                    variant="flat"
-                                    color="secondary"
-                                >
-                                    Status składki
-                                </Button>
-                            </DropdownTrigger>
-                            <DropdownMenu
-                                disallowEmptySelection
-                                aria-label="Składki"
-                                closeOnSelect={false}
-                                selectedKeys={feeFilter}
-                                selectionMode="multiple"
-                                onSelectionChange={setFeeFilter}
-                            >
-                                {feeOptions.map((fee) => (
-                                    <DropdownItem key={fee.uid} className="capitalize">
-                                        {capitalize(fee.name)}
-                                    </DropdownItem>
-                                ))}
-                            </DropdownMenu>
-                        </Dropdown>
                         <ButtonGroup>
                             <Button variant="flat" size="sm" color="primary" startContent={
-                                <FolderPlusIcon className="text-small h-6 w-6 text-primary" />
+                                <PlusIcon className="text-small h-6 w-6 text-primary" />
                             }>
-                                Import
-                            </Button>
-                            <Button variant="flat" size="sm" color="primary" startContent={
-                                <BanknotesIcon className="text-small h-6 w-6 text-primary" />
-                            }>
-                                Nowa Składka
-                            </Button>
-                            <Button variant="flat" size="sm" color="primary" startContent={
-                                <EnvelopeIcon className="text-small h-6 w-6 text-primary" />
-                            }>
-                                Wiadomość
+                                Nowa sekcja
                             </Button>
                         </ButtonGroup>
                     </div>
                 </div>
                 <div className="flex justify-between items-center">
-                    <span className="text-foreground text-small">Liczba zarejestrowanych wniosków: {members.length}</span>
+                    <span className="text-foreground text-small">Liczba sekcji: <b>{data.length}</b></span>
                     <label className="flex items-center text-foreground text-small">
                         Wierszy na strone:
                         <select
@@ -287,6 +177,7 @@ export default function UsersTable() {
                             <option value="5">5</option>
                             <option value="10">10</option>
                             <option value="15">15</option>
+                            <option value="15">20</option>
                         </select>
                     </label>
                 </div>
@@ -294,12 +185,11 @@ export default function UsersTable() {
         );
     }, [
         filterValue,
-        statusFilter,
-        feeFilter,
+        languageFilter,
         visibleColumns,
         onSearchChange,
         onRowsPerPageChange,
-        members.length,
+        data.length,
         hasSearchFilter,
     ]);
 
@@ -329,7 +219,8 @@ export default function UsersTable() {
 
     const classNames = React.useMemo(
         () => ({
-            wrapper: ["max-h-[382px]", "max-w-3xl"],
+            wrapper: ["max-h-[382px]", "max-w-full"],
+            table: ["w-full"],
             th: ["bg-transparent", "text-default-700", "border-b", "border-divider"],
             td: [
                 // changing the rows border radius
@@ -377,7 +268,7 @@ export default function UsersTable() {
                         </TableColumn>
                     )}
                 </TableHeader>
-                <TableBody emptyContent={"Brak zarejestrowanych wniosków"} items={sortedItems}>
+                <TableBody emptyContent={"Brak utworzonych sekcji"} items={sortedItems}>
                     {(item) => (
                         <TableRow key={item.id}>
                             {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}

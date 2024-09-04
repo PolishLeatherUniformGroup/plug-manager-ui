@@ -1,27 +1,25 @@
-export type MemberDetails = {
-    id: string;
-    card: string;
-    firsName: string;
-    lastName: string;
-    email: string;
-    phone?: string;
-    birthDate: string;
-    joinDate: string;
-    address: {
-        country: string;
-        city: string;
-        postalCode: string;
-        region?: string;
-        street: string;
-        house: string;
-        apartment?: string;
-    },
-    fees: Fee[]
-};
+import { DateValue } from '@nextui-org/react';
+import { Member } from '../../../../models/member';
+import { Address } from '../../../../models/address';
+
 
 export type Fee = {
     year: number,
-    dueAmount: string,
+    dueAmount: number,
     dueDate: string,
     paidDate?: string
+}
+
+export type MemberDetailsView = {
+    id: string;
+    cardNumber: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    phone?: string;
+    birthDate?: Date;
+    joinDate: Date;
+    address?: Address;
+    status: number;
+    fees: Fee[]
 }

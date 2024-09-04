@@ -3,7 +3,7 @@ import { Listbox, ListboxItem } from "@nextui-org/listbox";
 import Link from "next/link";
 import { useUser, withPageAuthRequired } from '@auth0/nextjs-auth0/client';
 import { User } from "@nextui-org/user";
-import { AdjustmentsHorizontalIcon, UserCircleIcon } from "@heroicons/react/24/outline";
+import { AdjustmentsHorizontalIcon, EnvelopeIcon, UserCircleIcon } from "@heroicons/react/24/outline";
 const ProfileLayout = ({
     children,
 }: {
@@ -41,10 +41,13 @@ const ProfileLayout = ({
                                 startContent={<UserCircleIcon className="w-6 h-6" />}>
                                 Rekomendacje
                             </ListboxItem>
+                            <ListboxItem key="messages" startContent={<EnvelopeIcon className="w-6 h-6" />}>
+                                Wiadomości
+                            </ListboxItem>
                         </Listbox>
                     </div>
                 </div>
-                <div className="p-4 w-2/3">
+                <div className="flex w-full p-4">
                     {children}
                 </div>
             </div>

@@ -34,13 +34,15 @@ export const siteConfig = {
       label: "Strefa członka",
       href: "/members",
       isProtected: true,
-      hasMenu: false
+      hasMenu: false,
+      feature: 'members_zone'
     },
     {
       label: "Wydarzenia",
       href: "/events",
       isProtected: false,
       hasMenu: false,
+      feature: 'events_management'
     }
   ],
   links: {

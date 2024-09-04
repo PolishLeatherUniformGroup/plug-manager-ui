@@ -1,5 +1,6 @@
 'use client';
 import { withPageAuthRequired } from '@auth0/nextjs-auth0/client';
+import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 import { PencilIcon } from '@heroicons/react/24/solid';
 import { Button } from '@nextui-org/button';
 import { Card, CardBody, CardHeader } from '@nextui-org/card';
@@ -12,10 +13,19 @@ const ProfilePage = () => {
     const [editPhone, setEditPhone] = useState(false);
     const [editBirth, setEditBirth] = useState(false);
     const [editAddress, setEditAddress] = useState(false);
-    return (<>
-        <Card radius='sm' className="w-full">
-            <CardHeader></CardHeader>
+    return (
+        <Card radius="sm" className="w-full min-w-[600px] max-h-[800px]">
+            <CardHeader>
+                <div>
+                    <h2 className="text-lg">Moje dane</h2>
+                </div>
+            </CardHeader>
             <CardBody>
+                <div className="w-full my-2">
+                    <div className="flex flex-row border-2 border-warning text-warning p-2 w-full text-lg rounded-md">
+                        <ExclamationTriangleIcon className="w-8 h-8" /> Masz nieopłaconą składkę za rok 2025!
+                    </div>
+                </div>
                 <div className="grid grid-cols-12 gap-2">
                     <Input label="Imię"
                         name="name"
@@ -137,6 +147,6 @@ const ProfilePage = () => {
             </CardBody>
 
         </Card>
-    </>)
+    )
 };
 export default withPageAuthRequired(ProfilePage);
