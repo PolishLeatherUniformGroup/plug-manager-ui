@@ -1,9 +1,10 @@
 import { Card, CardBody, CardHeader } from "@nextui-org/card";
 import { Input } from "@nextui-org/input";
-import { OrganizationDetails } from "../../../app/admin/settings/data";
+import { OrganizationDetails, OrganizationSetting } from '../../../app/admin/settings/data';
+import SettingInput from "./setting-input";
 
 interface OrganizationDetailsProps {
-    orgDetails: OrganizationDetails;
+    settings: OrganizationSetting[];
 }
 export default function OrganizationDetailsEdit(props: OrganizationDetailsProps) {
     return (
@@ -11,10 +12,7 @@ export default function OrganizationDetailsEdit(props: OrganizationDetailsProps)
             <CardHeader>Dane Organizacji</CardHeader>
             <CardBody>
                 <div className="grid grid-cols-12 gap-2">
-                    <Input label="Nazwa Organizacji" name="name" className="col-span-12" value={props.orgDetails.name} />
-                    <Input label="NIP" name="nip" className="col-span-6" value={props.orgDetails.nip} />
-                    <Input label="REGON" name="regon" className="col-span-6" value={props.orgDetails.regon} />
-                    <Input label="KRS" name="krs" className="col-span-6" value={props.orgDetails.krs} />
+                    {props.settings.map((setting) => (<SettingInput setting={setting} size="12" />))}
                 </div>
             </CardBody>
         </Card>

@@ -32,6 +32,8 @@ interface NavbarProps {
 export const Navbar = (props: NavbarProps) => {
   const { user, error, isLoading } = useUser();
   const router = useRouter();
+  const darkMode = props.features['dark_mode'];
+  console.log(`darkmode: ${darkMode}`);
   const userInRole = (role: string, user?: UserProfile): boolean => {
     if (!user) {
       return false;
@@ -175,13 +177,13 @@ export const Navbar = (props: NavbarProps) => {
         justify="end"
       >
         <NavbarItem className="hidden sm:flex gap-2">
-          <ThemeSwitch />
+          {darkMode ? <ThemeSwitch /> : null}
         </NavbarItem>
         <NavbarItem className="hidden lg:flex">{user ? userMenu : <Button as={Link} href="/api/auth/login">Zaloguj się</Button>}</NavbarItem>
       </NavbarContent>
 
       <NavbarContent className="sm:hidden basis-1 pl-4" justify="end">
-        <ThemeSwitch />
+        {darkMode ? <ThemeSwitch /> : null}
         <NavbarMenuToggle />
       </NavbarContent>
 

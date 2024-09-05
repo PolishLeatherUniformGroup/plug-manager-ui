@@ -1,6 +1,6 @@
 'use server';
 
-import { getSession, withPageAuthRequired } from "@auth0/nextjs-auth0";
+import { getSession } from "@auth0/nextjs-auth0";
 import UsersTable from "../../../components/admin/members/users-table";
 import { Suspense } from "react";
 import { Spinner } from "@nextui-org/react";
@@ -11,7 +11,7 @@ import { MemberView } from "./data";
 
 
 
-const AdminMembers = async () => {
+export default async function AdminMembers() {
     const session = await getSession();
     const plugApi = new ApiClient(apiConfig, session?.accessToken);
     const members = await plugApi.getMembers();
@@ -33,6 +33,3 @@ const AdminMembers = async () => {
     );
 };
 
-const getServerSideProps = withPageAuthRequired();
-
-export default withPageAuthRequired(AdminMembers, {});

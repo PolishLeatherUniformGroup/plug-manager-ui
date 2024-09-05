@@ -9,7 +9,7 @@ import { User } from "@nextui-org/user";
 import React, { useState, ReactNode } from "react";
 import { columns, MemberView, statusOptions } from "../../../app/admin/members/data";
 import { feeOptions } from "../../../app/admin/members/data";
-import { Selection } from "@nextui-org/react";
+import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Selection, useDisclosure } from "@nextui-org/react";
 import CheckCircleIcon from "@heroicons/react/24/solid/CheckCircleIcon";
 import ExclamationTriangleIcon from "@heroicons/react/24/solid/ExclamationTriangleIcon";
 import XCircleIcon from "@heroicons/react/24/solid/XCircleIcon";
@@ -53,6 +53,8 @@ export default function UsersTable({ data }: { data: MemberView[] }) {
         direction: "ascending",
     });
     const [page, setPage] = useState(1);
+
+    const importMmebersDisclousere = useDisclosure();
 
     const pages = Math.ceil(data.length / rowsPerPage);
 
@@ -203,7 +205,9 @@ export default function UsersTable({ data }: { data: MemberView[] }) {
                         <ButtonGroup>
                             <Button variant="flat" size="sm" color="primary" startContent={
                                 <FolderPlusIcon className="text-small h-6 w-6 text-primary" />
-                            }>
+                            }
+                                onClick={importMmebersDisclousere.onOpen}
+                            >
                                 Import
                             </Button>
                             <Button variant="flat" size="sm" color="primary" startContent={
@@ -288,6 +292,46 @@ export default function UsersTable({ data }: { data: MemberView[] }) {
         }),
         [],
     );
+
+    const ImportMembersModal = ({ isOpen, onOpenChange, onClose }: {
+        isOpen: boolean,
+        onOpenChange: () => void,
+        onClose?: () => void
+    }) => {
+        return (<Modal backdrop="opaque"
+            size="xl"
+            isOpen={isOpen}
+            onClose={onClose}
+            onOpenChange={onOpenChange}
+            classNames={{
+                backdrop: "bg-gradient-to-t from-zinc-900 to-zinc-900/10 backdrop-opacity-20"
+            }}>
+            <ModalContent>
+                {(onClose) => {
+                    return (<>
+                        <ModalHeader>Import Członków</ModalHeader>
+                        <ModalBody>
+
+                        </ModalBody>
+                        <ModalFooter>
+                            <Button
+                                color="secondary"
+                                variant="shadow"
+                                onClick={() => {
+                                    onClose();
+                                }}
+
+                            >Wyślij</Button>
+                            <Button
+                                onClick={onClose}
+                                color="danger" variant="light">Anuluj</Button>
+                        </ModalFooter>
+                    </>)
+                }}
+            </ModalContent >
+        </Modal>);
+    };
+
     return (
         <>
             <Table
@@ -328,6 +372,7 @@ export default function UsersTable({ data }: { data: MemberView[] }) {
                     )}
                 </TableBody>
             </Table>
+            {ImportMembersModal({ isOpen: importMmebersDisclousere.isOpen, onOpenChange: importMmebersDisclousere.onOpenChange })}
         </>
     );
 }

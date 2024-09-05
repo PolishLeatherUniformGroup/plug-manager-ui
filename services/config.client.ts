@@ -1,3 +1,4 @@
+
 import { ApiConfig } from "../config/api";
 export const ConfigurationKeys = {
     APP_INSTALLED: 'app_installed',
@@ -51,6 +52,20 @@ export class ConfigClient {
     async getAll(): Promise<ConfigValue[]> {
         const response = await fetch(`${this.baseUrl}/config`);
         return await response.json() as ConfigValue[];
+    }
+
+    async updateValue(key: string, value: string) {
+        const body = {
+            value: value
+        }
+        console.log(`Sending ${key} with ${JSON.stringify(body)}`);
+        const response = await fetch(`${this.baseUrl}/config/${key}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(body)
+        });
     }
 
 }

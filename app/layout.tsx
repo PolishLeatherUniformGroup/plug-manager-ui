@@ -56,6 +56,7 @@ export default async function RootLayout({
   const features = {
     members_zone: await featuresClient.isFeatureEnabled("members_zone"),
     events_management: await featuresClient.isFeatureEnabled("events_management"),
+    dark_mode: await featuresClient.isFeatureEnabled("dark_mode"),
   };
 
   const footer = (orgDetails: OrganizationDetails) => (<footer className="w-full flex items-start min-h-[100px] justify-center  bg-default-50 border-t-1 border-primary-600 dark:bg-default/50">
