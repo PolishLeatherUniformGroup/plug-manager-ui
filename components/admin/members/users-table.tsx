@@ -9,13 +9,14 @@ import { User } from "@nextui-org/user";
 import React, { useState, ReactNode } from "react";
 import { columns, MemberView, statusOptions } from "../../../app/admin/members/data";
 import { feeOptions } from "../../../app/admin/members/data";
-import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Selection, useDisclosure } from "@nextui-org/react";
+import { Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Selection, useDisclosure } from "@nextui-org/react";
 import CheckCircleIcon from "@heroicons/react/24/solid/CheckCircleIcon";
 import ExclamationTriangleIcon from "@heroicons/react/24/solid/ExclamationTriangleIcon";
 import XCircleIcon from "@heroicons/react/24/solid/XCircleIcon";
 import { useRouter } from "next/navigation";
 import { Member } from "../../../models/member";
 import { table } from "console";
+import UploadForm from "../../upload-fomr";
 
 export function capitalize(str: string) {
     return str.charAt(0).toUpperCase() + str.slice(1);
@@ -309,23 +310,12 @@ export default function UsersTable({ data }: { data: MemberView[] }) {
             <ModalContent>
                 {(onClose) => {
                     return (<>
+
                         <ModalHeader>Import Członków</ModalHeader>
                         <ModalBody>
-
+                            <UploadForm success={onClose} />
                         </ModalBody>
-                        <ModalFooter>
-                            <Button
-                                color="secondary"
-                                variant="shadow"
-                                onClick={() => {
-                                    onClose();
-                                }}
 
-                            >Wyślij</Button>
-                            <Button
-                                onClick={onClose}
-                                color="danger" variant="light">Anuluj</Button>
-                        </ModalFooter>
                     </>)
                 }}
             </ModalContent >

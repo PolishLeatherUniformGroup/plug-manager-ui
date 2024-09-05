@@ -1,18 +1,22 @@
 import { NextRequest, NextResponse } from "next/server";
-import { promises as fs } from 'fs';
 import { CsvParser } from "./csvParser";
 
 export const POST = async (req: NextRequest, res: NextResponse) => {
     const formData = await req.formData();
-
-    const file: File | null = await formData.get("file") as File || null;
+    console.log(formData);
+    const file: File | null = formData.get("file") as File || null;
     if (!file) {
         return NextResponse.json({ error: "No files received." }, { status: 400 });
     }
+
     const fileName = file.name;
     const fileType = file.type;
+    console.log(`File name: ${fileName}, File type: ${fileType}`);
     try {
-        const fileReader = file.stream().getReader();
+
+        const stream = file.stream();
+
+        const fileReader = stream.getReader();
         const fileDataU8: number[] = [];
         while (true) {
 

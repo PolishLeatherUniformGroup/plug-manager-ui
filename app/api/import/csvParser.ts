@@ -22,7 +22,7 @@ export class CsvParser {
     }
 
     private static parseLine(line: string): MemeberImportData {
-        const [card, firstName, lastName, email, phone, birthday, joinDate, country, region, city, postalCode, street, house, appartment] = line.split(",");
+        const [card, firstName, lastName, email, phone, birthday, joinDate, country, region, city, postalCode, street, house, appartment] = line.split(";");
         return {
             card,
             firstName,
