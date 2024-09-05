@@ -1,10 +1,30 @@
 
 import { Fee } from '../app/admin/members/[id]/data';
+import { MemeberImportData } from '../app/api/import/csvParser';
 import { ApiConfig } from '../config/api';
 import { Applicant } from '../models/applicant';
 import { Member } from '../models/member';
 
+export type ImportData = {
+    cardNumber: string,
+    firstName: string,
+    lastName: string,
+    email: string,
+    phone?: string,
+    birthDate?: Date,
+    joinDate: Date,
+    address?: {
+        country: string,
+        region?: string,
+        city: string,
+        postalCode: string,
+        street: string,
+        house: string,
+        apartment?: string
+    }
+}
 export class ApiClient {
+
     private readonly baseUrl;
     constructor(private readonly apiConfig: ApiConfig, private readonly token?: string) {
         this.baseUrl = apiConfig.BaseUrl;
@@ -27,11 +47,14 @@ export class ApiClient {
         });
     }
     private async put(url: string, data: any): Promise<Response> {
+        console.log('PUT :', JSON.stringify(data));
         return await fetch(url, {
             method: 'PUT',
             headers: {
-                "Authorization": `Bearer ${this.token}`
-            }
+                "Authorization": `Bearer ${this.token}`,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
         });
     }
 
@@ -179,6 +202,34 @@ export class ApiClient {
         } else {
             return [];
         }
+
+    }
+
+    async importData(data: MemeberImportData[]) {
+
+        let url = `${this.baseUrl}/members`;
+        let converted = {
+            members: data.map((item: MemeberImportData) => ({
+                cardNumber: item.card,
+                firstName: item.firstName,
+                lastName: item.lastName,
+                email: item.email,
+                phone: item.phone,
+                birthDate: item.birthday ? new Date(item.birthday) : null,
+                joinDate: new Date(item.joinDate),
+                address: {
+                    country: item.country,
+                    region: item.region,
+                    city: item.city,
+                    postalCode: item.postalCode,
+                    street: item.street,
+                    house: item.house,
+                    apartment: item.appartment
+                }
+            }))
+        };
+        console.log('Converted :', JSON.stringify(converted));
+        let response = await this.put(url, converted);
 
     }
 }

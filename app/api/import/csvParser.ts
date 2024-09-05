@@ -6,7 +6,7 @@ export type MemeberImportData = {
     email: string;
     phone?: string;
     birthday?: string;
-    joinDate?: string;
+    joinDate: string;
     country?: string;
     region?: string;
     city?: string;

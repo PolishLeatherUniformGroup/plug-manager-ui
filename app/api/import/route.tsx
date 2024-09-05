@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { CsvParser } from "./csvParser";
+import { ApiClient } from "../../../services/api.client";
+import { apiConfig } from "../../../config/api";
+
 
 export const POST = async (req: NextRequest, res: NextResponse) => {
     const formData = await req.formData();
@@ -29,8 +32,8 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
 
         const fileText = new TextDecoder().decode(new Uint8Array(fileDataU8));
         const data = CsvParser.parseCsvData(fileText);
-        console.log(data);
-        // send to import service in api
+        const apiClient = new ApiClient(apiConfig);
+        await apiClient.importData(data);
         return NextResponse.json({ Message: "Success", status: 201 });
     } catch (error) {
         console.log("Error occured ", error);

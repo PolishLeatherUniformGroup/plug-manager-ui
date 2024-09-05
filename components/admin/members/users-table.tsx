@@ -25,7 +25,8 @@ export function capitalize(str: string) {
 const INITIAL_VISIBLE_COLUMNS = ["name", "card", "status", "actions"];
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
-    "0": "success",
+    "0": "default",
+    "1": "success",
     "2": "warning",
     "3": "danger",
     "4": "default",

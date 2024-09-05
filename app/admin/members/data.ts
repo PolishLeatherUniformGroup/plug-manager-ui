@@ -8,12 +8,13 @@ export type MemberView = {
 };
 
 export const statusOptions = [
-    { name: "Aktywny", uid: "0" },
-    { name: "Zawieszony", uid: "1" },
-    { name: "Wykluczony", uid: "2" },
+    { name: "Nie aktywny", uid: "0" },
+    { name: "Aktywny", uid: "1" },
+    { name: "Zawieszony", uid: "2" },
+    { name: "Wykluczony", uid: "3" },
     { name: "Wygaszony", uid: "4" },
-    { name: "w odwołaniu", uid: "5" },
-    { name: "W odwołoaniu", uid: "6" },
+    { name: "w odwołaniu od zawieszenia", uid: "5" },
+    { name: "W odwołaniu od wykluczenia", uid: "6" },
 ];
 
 export const feeOptions = [
