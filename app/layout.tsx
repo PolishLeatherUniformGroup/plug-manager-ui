@@ -18,6 +18,7 @@ import {
 } from "@nextui-org/navbar";
 import { FeaturesClient } from "../services/features.client";
 import { features } from "process";
+import { OrganizationDetails } from "./admin/settings/data";
 
 export const metadata: Metadata = {
   title: {
@@ -48,13 +49,23 @@ export default async function RootLayout({
 
     </NextUINavbar>
   );
-  const footer = (<footer className="w-full flex items-start min-h-[100px] justify-center  bg-default-50 border-t-1 border-primary-600 dark:bg-default/50">
+
+
+  const featuresClient = new FeaturesClient(apiConfig);
+  const configClient = new ConfigClient(apiConfig);
+  const features = {
+    members_zone: await featuresClient.isFeatureEnabled("members_zone"),
+    events_management: await featuresClient.isFeatureEnabled("events_management"),
+  };
+
+  const footer = (orgDetails: OrganizationDetails) => (<footer className="w-full flex items-start min-h-[100px] justify-center  bg-default-50 border-t-1 border-primary-600 dark:bg-default/50">
     <div className="container mx-auto py-2">
       <div className="grid grid-cols-12 gap-1">
-        <div className="col-span-4 col-start-2 px-2">
-          <h4>Stowarzyszenie Polish Leather Uniform Group</h4>
-          <h5>NIP </h5>
-          <h5>REGON</h5>
+        <div className="col-span-4 col-start-2 px-2 text-foreground/90">
+          <h4>{orgDetails.name}</h4>
+          <h5>NIP: {orgDetails.nip}</h5>
+          <h5>REGON: {orgDetails.regon}</h5>
+          {orgDetails.krs && <h5>KRS: {orgDetails.krs}</h5>}
         </div>
         <div className="col-span-2 px-2">
           <h4 className="text-sm font-extrabold uppercase text-primary-700 mb-4">Bezpieczeństwo</h4>
@@ -74,10 +85,11 @@ export default async function RootLayout({
     </div>
   </footer>);
 
-  const configClient = new FeaturesClient(apiConfig);
-  const features = {
-    members_zone: await configClient.isFeatureEnabled("members_zone"),
-    events_management: await configClient.isFeatureEnabled("events_management"),
+  const orgDetails: OrganizationDetails = {
+    name: await configClient.getString("org_name") ?? '',
+    nip: await configClient.getString("org_nip") ?? '',
+    regon: await configClient.getString("org_regon") ?? '',
+    krs: await configClient.getString("org_krs") ?? undefined
   };
 
   return (
@@ -97,7 +109,7 @@ export default async function RootLayout({
               {children}
             </main>
           </div>
-          {footer}
+          {footer(orgDetails)}
         </Providers>
       </body>
     </html >

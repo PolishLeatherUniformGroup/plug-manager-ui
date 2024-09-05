@@ -31,6 +31,11 @@ export class FeaturesClient {
                 revalidate: 0
             }
         });
+        if (response.status === 400) {
+            console.log(`Feature ${key} not found`);
+            return false;
+        }
+
         const { enabled } = await response.json();
         return enabled
     }

@@ -17,8 +17,8 @@ export function FeatureSwitch(props: FeatureSwitchProps) {
     return (
         <div className="flex flex-row w-full py-1 border-b-1 border-default-300">
             <Switch defaultSelected={props.data.enabled} className="col-span-6" feature-id={props.data.id}
-                onChange={(e) => {
-                    props.onChange?.(props.data.id, e.target.checked)
+                onValueChange={(selected) => {
+                    props.onChange?.(props.data.id, selected);
                     window.location.reload();
                 }}
             >
