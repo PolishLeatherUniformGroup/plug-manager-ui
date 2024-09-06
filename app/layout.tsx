@@ -19,6 +19,7 @@ import {
 import { FeaturesClient } from "../services/features.client";
 import { features } from "process";
 import { OrganizationDetails } from "./admin/settings/data";
+import { CookieConsent } from "../components/cookie-consent";
 
 export const metadata: Metadata = {
   title: {
@@ -84,6 +85,7 @@ export default async function RootLayout({
 
       </div>
     </div>
+    <CookieConsent />
   </footer>);
 
   const orgDetails: OrganizationDetails = {

@@ -41,12 +41,16 @@ export class ConfigClient {
     }
 
     async getString(key: string): Promise<string | null> {
-        const response = await fetch(`${this.baseUrl}/config/${key}`);
-        const data = await response.json();
-        if (data.valueType === 'string') {
-            return data.value;
+        try {
+            const response = await fetch(`${this.baseUrl}/config/${key}`);
+            const data = await response.json();
+            if (data.valueType === 'string') {
+                return data.value;
+            }
+            return null;
+        } catch (e) {
+            return null;
         }
-        return null;
     }
 
     async getAll(): Promise<ConfigValue[]> {
