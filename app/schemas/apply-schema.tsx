@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { getLocalTimeZone, now, parseDate, today, DateValue } from "@internationalized/date";
 
-const age: number = 16;
+const age: number = 18;
 const oldEnough = (years: number): DateValue => {
     const result = today(getLocalTimeZone());
 

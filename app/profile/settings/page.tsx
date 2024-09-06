@@ -1,6 +1,3 @@
-'use client';
-import { withPageAuthRequired } from '@auth0/nextjs-auth0/client';
-const ProfileSettingsPage = () => {
+export default async function  ProfileSettingsPage () {
     return (<></>)
 };
-export default withPageAuthRequired(ProfileSettingsPage);
