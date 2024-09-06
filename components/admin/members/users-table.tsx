@@ -17,6 +17,7 @@ import { useRouter } from "next/navigation";
 import { Member } from "../../../models/member";
 import { table } from "console";
 import UploadForm from "../../upload-fomr";
+import { activate } from "../../../app/admin/members/actions";
 
 export function capitalize(str: string) {
     return str.charAt(0).toUpperCase() + str.slice(1);
@@ -149,6 +150,7 @@ export default function UsersTable({ data }: { data: MemberView[] }) {
                             <DropdownMenu>
                                 <DropdownItem key="edit" onClick={() => { router.push(`/admin/members/${member.id}`) }}>Zarządaj</DropdownItem>
                                 <DropdownItem key="send">Wyślij wiadomość</DropdownItem>
+                                <DropdownItem key="activate" onClick={() => {activate({ id: member.id })}}>Aktywuj</DropdownItem>
                             </DropdownMenu>
                         </Dropdown>
                     </div>

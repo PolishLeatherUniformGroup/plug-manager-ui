@@ -205,6 +205,11 @@ export class ApiClient {
 
     }
 
+    async activateMember(id: string) {
+        let url = `${this.baseUrl}/members/${id}/activation`;
+        let response = await this.put(url, {});
+    }
+
     async importData(data: MemeberImportData[]) {
 
         let url = `${this.baseUrl}/members`;
