@@ -16,7 +16,7 @@ import XCircleIcon from "@heroicons/react/24/solid/XCircleIcon";
 import { useRouter } from "next/navigation";
 import { Member } from "../../../models/member";
 import { table } from "console";
-import UploadForm from "../../upload-fomr";
+import UploadForm from "../../upload-form";
 import { activate } from "../../../app/admin/members/actions";
 
 export function capitalize(str: string) {
