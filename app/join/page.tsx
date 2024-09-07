@@ -1,6 +1,6 @@
 import ApplyForm from "../../components/join/apply-form";
 
-export default function AboutPage() {
+export default async function AboutPage() {
     return (
         <div>
             <ApplyForm />
