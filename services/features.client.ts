@@ -26,18 +26,22 @@ export class FeaturesClient {
     }
 
     async isFeatureEnabled(key: string): Promise<boolean> {
-        const response = await fetch(`${this.baseUrl}/features/${key}`, {
-            next: {
-                revalidate: 0
+        try {
+            const response = await fetch(`${this.baseUrl}/features/${key}`, {
+                next: {
+                    revalidate: 0
+                }
+            });
+            if (response.status === 400) {
+                console.log(`Feature ${key} not found`);
+                return false;
             }
-        });
-        if (response.status === 400) {
-            console.log(`Feature ${key} not found`);
+
+            const { enabled } = await response.json();
+            return enabled
+        } catch (e) {
             return false;
         }
-
-        const { enabled } = await response.json();
-        return enabled
     }
 
     switch(id: number, enabled: boolean) {

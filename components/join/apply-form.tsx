@@ -9,6 +9,7 @@ import { Card, CardBody } from "@nextui-org/card";
 import { getLocalTimeZone, today } from "@internationalized/date";
 import { ApplySchema, applySchema } from "@/app/schemas/apply-schema";
 import { subtitle, title } from "../primitives";
+import { useTranslation } from "react-i18next";
 
 export default function ApplyForm() {
     let defaultDate = today(getLocalTimeZone());
@@ -75,13 +76,13 @@ export default function ApplyForm() {
         })
             .catch((error) => { });
     }
-
+    const { t } = useTranslation();
     return (
         <Card className="p-8 mt-4">
             <CardBody>
                 <form className="col-span-6" onSubmit={handleSubmit(onSubmit)}>
                     <div>
-                        <h1 className={title()}>Deklaracja członkowska</h1>
+                        <h1 className={title()}>{t('join_form_title')}</h1>
                         <div className="mt-4 grid grid-cols-2 gap-2 w-full">
                             <Controller
                                 control={control}
@@ -90,7 +91,7 @@ export default function ApplyForm() {
                                     <Input
                                         errorMessage={errors.firstName?.message}
                                         isInvalid={errors.firstName ? true : false}
-                                        label="Imię"
+                                        label={t('join_form_given_name')}
                                         labelPlacement="inside"
                                         value={value}
                                         onBlur={onBlur}
@@ -106,7 +107,7 @@ export default function ApplyForm() {
                                     <Input
                                         errorMessage={errors.lastName?.message}
                                         isInvalid={errors.lastName ? true : false}
-                                        label="Nazwisko"
+                                        label={t('join_form_family_name')}
                                         labelPlacement="inside"
                                         value={value}
                                         onBlur={onBlur}
@@ -121,7 +122,7 @@ export default function ApplyForm() {
                                     <Input
                                         errorMessage={errors.email?.message}
                                         isInvalid={errors.email ? true : false}
-                                        label="Adres email"
+                                        label={t('join_form_email')}
                                         labelPlacement="inside"
                                         value={value}
                                         onBlur={onBlur}
@@ -136,7 +137,7 @@ export default function ApplyForm() {
                                     <Input
                                         errorMessage={errors.phone?.message}
                                         isInvalid={errors.phone ? true : false}
-                                        label="Telefon kontaktowy"
+                                        label={t('join_form_phone')}
                                         labelPlacement="inside"
                                         value={value}
                                         onBlur={onBlur}
@@ -152,7 +153,7 @@ export default function ApplyForm() {
                                     <DatePicker
                                         errorMessage={errors.birthDate?.message}
                                         isInvalid={errors.birthDate ? true : false}
-                                        label="Data urodzenia"
+                                        label={t('join_form_birth_date')}
                                         value={value}
                                         onBlur={onBlur}
                                         onChange={onChange}
@@ -161,7 +162,7 @@ export default function ApplyForm() {
                                 )}
                             />
                         </div>
-                        <h2 className={subtitle()}>Adres korespondencyjny</h2>
+                        <h2 className={subtitle()}>{t('join_form_address')}</h2>
                         <div className="grid grid-cols-2 gap-2 w-full">
                             <Controller
                                 control={control}
@@ -170,7 +171,7 @@ export default function ApplyForm() {
                                     <Input
                                         errorMessage={errors.country?.message}
                                         isInvalid={errors.country ? true : false}
-                                        label="Kraj"
+                                        label={t('join_form_country')}
                                         labelPlacement="inside"
                                         value={value}
                                         onBlur={onBlur}
@@ -185,7 +186,7 @@ export default function ApplyForm() {
                                     <Input
                                         errorMessage={errors.region?.message}
                                         isInvalid={errors.region ? true : false}
-                                        label="Region /stan"
+                                        label={t('join_form_region')}
                                         labelPlacement="inside"
                                         value={value}
                                         onBlur={onBlur}
@@ -200,7 +201,7 @@ export default function ApplyForm() {
                                     <Input
                                         errorMessage={errors.city?.message}
                                         isInvalid={errors.city ? true : false}
-                                        label="Miasto"
+                                        label={t('join_form_city')}
                                         labelPlacement="inside"
                                         value={value}
                                         onBlur={onBlur}
@@ -215,7 +216,7 @@ export default function ApplyForm() {
                                     <Input
                                         errorMessage={errors.postalCode?.message}
                                         isInvalid={errors.postalCode ? true : false}
-                                        label="Kod pocztowy"
+                                        label={t('join_form_postal_code')}
                                         labelPlacement="inside"
                                         value={value}
                                         onBlur={onBlur}
@@ -230,7 +231,7 @@ export default function ApplyForm() {
                                     <Input
                                         errorMessage={errors.street?.message}
                                         isInvalid={errors.street ? true : false}
-                                        label="Ulica"
+                                        label={t('join_form_street')}
                                         labelPlacement="inside"
                                         value={value}
                                         onBlur={onBlur}
@@ -245,7 +246,7 @@ export default function ApplyForm() {
                                     <Input
                                         errorMessage={errors.house?.message}
                                         isInvalid={errors.house ? true : false}
-                                        label="Numer domu"
+                                        label={t('join_form_house_number')}
                                         labelPlacement="inside"
                                         value={value}
                                         onBlur={onBlur}
@@ -260,7 +261,7 @@ export default function ApplyForm() {
                                     <Input
                                         errorMessage={errors.appartment?.message}
                                         isInvalid={errors.country ? true : false}
-                                        label="Numer mieszkania"
+                                        label={t('join_form_apartment_number')}
                                         labelPlacement="inside"
                                         value={value}
                                         onBlur={onBlur}
@@ -269,7 +270,7 @@ export default function ApplyForm() {
                                 )}
                             />
                         </div>
-                        <h2 className={subtitle()}>Rekomendacje</h2>
+                        <h2 className={subtitle()}>{t('join_form_recommendations')}</h2>
                         <div className="grid grid-cols-2 gap-2 w-full">
                             <Controller
                                 control={control}
@@ -278,7 +279,7 @@ export default function ApplyForm() {
                                     <Input
                                         errorMessage={errors.recommender1?.message}
                                         isInvalid={errors.recommender1 ? true : false}
-                                        label="Członek rekomnedujący 1"
+                                        label={t('join_form_recommender_1')}
                                         labelPlacement="inside"
                                         value={value}
                                         onBlur={onBlur}
@@ -293,7 +294,7 @@ export default function ApplyForm() {
                                     <Input
                                         errorMessage={errors.recommender2?.message}
                                         isInvalid={errors.recommender2 ? true : false}
-                                        label="Członek rekomnedujący 2"
+                                        label={t('join_form_recommender_2')}
                                         labelPlacement="inside"
                                         value={value}
                                         onBlur={onBlur}
@@ -303,7 +304,7 @@ export default function ApplyForm() {
                             />
                         </div>
                         <Button type="submit" color="primary" className="w-40 mt-4">
-                            Wyślij wniosek
+                            {t('join_form_send')}
                         </Button>
                     </div>
                 </form>

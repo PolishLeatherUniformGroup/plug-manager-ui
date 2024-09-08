@@ -41,17 +41,25 @@ export class ConfigClient {
     }
 
     async getString(key: string): Promise<string | null> {
-        const response = await fetch(`${this.baseUrl}/config/${key}`);
-        const data = await response.json();
-        if (data.valueType === 'string') {
-            return data.value;
+        try {
+            const response = await fetch(`${this.baseUrl}/config/${key}`);
+            const data = await response.json();
+            if (data.valueType === 'string') {
+                return data.value;
+            }
+            return null;
+        } catch (e) {
+            return null;
         }
-        return null;
     }
 
     async getAll(): Promise<ConfigValue[]> {
-        const response = await fetch(`${this.baseUrl}/config`);
-        return await response.json() as ConfigValue[];
+        try {
+            const response = await fetch(`${this.baseUrl}/config`);
+            return await response.json() as ConfigValue[];
+        } catch (e) {
+            return [];
+        }
     }
 
     async updateValue(key: string, value: string) {

@@ -21,7 +21,8 @@ import { User } from "@nextui-org/user";
 import { UserProfile, useUser } from "@auth0/nextjs-auth0/client";
 import { useRouter } from "next/navigation";
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
-import { features } from '../config/features';
+import LanguageChoose from "./language-choose";
+import { useTranslation } from "react-i18next";
 
 interface NavbarProps {
   features: {
@@ -33,7 +34,7 @@ export const Navbar = (props: NavbarProps) => {
   const { user, error, isLoading } = useUser();
   const router = useRouter();
   const darkMode = props.features['dark_mode'];
-  console.log(`darkmode: ${darkMode}`);
+  const { t } = useTranslation();
   const userInRole = (role: string, user?: UserProfile): boolean => {
     if (!user) {
       return false;
@@ -67,29 +68,29 @@ export const Navbar = (props: NavbarProps) => {
         userInRole("board", user) ? (
           <DropdownMenu aria-label="User Actions" variant="flat">
             <DropdownItem key="b-profile" className="h-14 gap-2" as={NextLink} href="/profile">
-              <p className="font-bold">Zalogowany jako</p>
+              <p className="font-bold">{t('nav_user_logged_in')}</p>
               <p className="font-bold">{user?.nickname}</p>
             </DropdownItem>
             <DropdownItem key="b-messages">
-              Wiadomości
+              {t('nav_user_messages')}
             </DropdownItem>
             <DropdownItem key="b-admin">
-              <NextLink href="/admin"> Zarządzanie</NextLink>
+              <NextLink href="/admin">{t('nav_user_manage')}</NextLink>
             </DropdownItem>
             <DropdownItem key="b-logout" color="danger" as={Link} href="/api/auth/logout">
-              Wyloguj się
+              {t('nav_user_logout')}
             </DropdownItem>
           </DropdownMenu>) : (
           <DropdownMenu aria-label="User Actions" variant="flat">
             <DropdownItem key="profile" className="h-14 gap-2">
-              <p className="font-bold">Zalogowany jako</p>
+              <p className="font-bold">{t('nav_user_logged_in')}</p>
               <p className="font-bold">{user?.nickname}</p>
             </DropdownItem>
             <DropdownItem key="messages">
-              Wiadomości
+              {t('nav_user_messages')}
             </DropdownItem>
             <DropdownItem key="logout" color="danger" as={Link} href="/api/auth/logout">
-              Wyloguj się
+              {t('nav_user_logout')}
             </DropdownItem>
           </DropdownMenu>)
       }
@@ -104,7 +105,7 @@ export const Navbar = (props: NavbarProps) => {
         color="foreground"
         href={item.href}
       >
-        {item.label}
+        {t(item.label)}
       </NextLink>
     </NavbarItem>)
   };
@@ -118,7 +119,7 @@ export const Navbar = (props: NavbarProps) => {
             className={clsx(
               "text-inherit data-[active=true]:text-primary data-[active=true]:font-bold cursor-pointer",
             )} >
-            {item.label}
+            {t(item.label)}
             <ChevronDownIcon className="w-5 h-5 text-inherit" />
           </Link>
         </DropdownTrigger>
@@ -141,7 +142,7 @@ export const Navbar = (props: NavbarProps) => {
               color="foreground"
               href={subitem.href}
             >
-              {subitem.label}
+              {t(subitem.label)}
             </NextLink>
           </DropdownItem>
         ))}
@@ -177,12 +178,14 @@ export const Navbar = (props: NavbarProps) => {
         justify="end"
       >
         <NavbarItem className="hidden sm:flex gap-2">
+          <LanguageChoose />
           {darkMode ? <ThemeSwitch /> : null}
         </NavbarItem>
         <NavbarItem className="hidden lg:flex">{user ? userMenu : <Button as={Link} href="/api/auth/login">Zaloguj się</Button>}</NavbarItem>
       </NavbarContent>
 
       <NavbarContent className="sm:hidden basis-1 pl-4" justify="end">
+        <LanguageChoose />
         {darkMode ? <ThemeSwitch /> : null}
         <NavbarMenuToggle />
       </NavbarContent>
