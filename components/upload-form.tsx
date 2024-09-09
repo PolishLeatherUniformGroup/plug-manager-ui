@@ -1,4 +1,7 @@
-import { useRouter } from "next/navigation";
+'use client';
+import {
+    useRouter
+} from "next/navigation";
 
 interface UploadFormProps {
     success: () => any;

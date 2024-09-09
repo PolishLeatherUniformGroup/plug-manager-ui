@@ -1,18 +1,20 @@
 'use client';
-import { UserProfile, useUser } from "@auth0/nextjs-auth0/client"
+import { useUser } from "@auth0/nextjs-auth0/client"
 import { Card, CardBody, CardHeader } from "@nextui-org/card";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-
+import { useRouter } from "next/navigation"
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
 import { Button } from "@nextui-org/button";
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, DropdownSection } from "@nextui-org/dropdown";
-import { Input, Textarea } from "@nextui-org/input";
-import { DatePicker, DateValue, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure, } from "@nextui-org/react";
-;
+import { Input } from "@nextui-org/input";
+import { DatePicker, useDisclosure, } from "@nextui-org/react";
 import { getLocalTimeZone, parseDate, today } from "@internationalized/date";
-import { expell, overrideFee, suspend, terminate } from "../../../app/admin/members/[id]/actions";
 import { Fee, MemberDetailsView } from "../../../app/admin/members/[id]/data";
+import { FeeOverride } from "./member-override-fee";
+import { ApplicationModal } from "../../common/application-modal";
+import { useTranslation } from "react-i18next";
+import { SuspendMember } from "./suspend-member";
+import { ExpellMember } from "./expell-member";
+import { TerminateMember } from "./terminate-member";
 
 export const feeColumns = [
     { name: "Rok", uid: "year", sortable: true },
@@ -27,357 +29,14 @@ export default function MemberView({ data }: { data: MemberDetailsView }) {
     const router = useRouter();
     const { user } = useUser();
 
+    const test = useDisclosure();
     const feeOverridDisclousere = useDisclosure();
     const suspendDisclosure = useDisclosure();
     const expellDisclosure = useDisclosure();
     const terminateDisclosure = useDisclosure();
     const currentYear = new Date().getFullYear();
 
-
-
-    const FeeOverrideModal = ({ isOpen, onOpenChange, onClose }: {
-        isOpen: boolean,
-        onOpenChange: () => void,
-        onClose?: () => void
-    }) => {
-        let newFee: {
-            year: number,
-            amount?: number,
-            dueDate?: Date
-        } = {
-            year: new Date().getFullYear(),
-            dueDate: new Date(new Date().getFullYear(), 2, 31)
-
-        };
-        return (
-            <Modal backdrop="opaque"
-                size="lg"
-                isOpen={isOpen}
-                onClose={onClose}
-                onOpenChange={onOpenChange}
-                classNames={{
-                    backdrop: "bg-gradient-to-t from-zinc-900 to-zinc-900/10 backdrop-opacity-20"
-                }}>
-                <ModalContent>
-                    {(onClose) => {
-                        return (<>
-                            <ModalHeader>Nadpisanie składki</ModalHeader>
-                            <ModalBody>
-                                <div className=" grid grid-cols-12 rows-auto gap-2">
-                                    <Input
-                                        label="Rok"
-                                        type="number"
-                                        value={newFee.year.toString()}
-                                        readOnly
-                                        className="col-span-4"
-                                    />
-                                    <Input
-                                        label="Kwota"
-                                        type="number"
-                                        className="col-span-4"
-                                        value={newFee.amount?.toPrecision(2)}
-                                        onChange={(e) => {
-                                            newFee.amount = parseFloat(e.target.value)
-                                        }}
-                                    />
-                                    <Input
-                                        label="Termin płatności"
-                                        type="date"
-                                        readOnly
-                                        value={newFee.dueDate?.toISOString().split('T')[0]}
-                                        className="col-span-4"
-                                    />
-                                </div >
-                            </ModalBody>
-                            <ModalFooter>
-                                <Button
-                                    color="secondary"
-                                    variant="shadow"
-                                    onClick={() => {
-                                        overrideFee({ id: data?.id ?? "", year: newFee.year, amount: newFee.amount ?? 0, date: newFee.dueDate ?? new Date() })
-                                        onClose();
-                                    }}
-
-                                >Zapisz</Button>
-                                <Button
-                                    onClick={onClose}
-                                    color="danger" variant="light">Anuluj</Button>
-                            </ModalFooter>
-                        </>)
-                    }}
-
-                </ModalContent >
-            </Modal>
-        )
-    }
-
-    const SuspendModal = ({ isOpen, onOpenChange, onClose }: {
-        isOpen: boolean,
-        onOpenChange: () => void,
-        onClose?: () => void
-    }) => {
-        let defaultDate = today(getLocalTimeZone());
-        let suspension: {
-            reason: string,
-            suspensionDate: DateValue,
-            endDate: DateValue,
-            appealDate: DateValue,
-            card?: string
-        } = {
-            reason: "",
-            suspensionDate: defaultDate,
-            endDate: defaultDate,
-            appealDate: defaultDate
-        }
-        const [blocked, setBlocked] = useState(suspension.card !== user?.nickname);
-
-        return (
-            <Modal backdrop="opaque"
-                size="xl"
-                isOpen={isOpen}
-                onClose={onClose}
-                onOpenChange={onOpenChange}
-                classNames={{
-                    backdrop: "bg-gradient-to-t from-zinc-900 to-zinc-900/10 backdrop-opacity-20"
-                }}>
-                <ModalContent>
-                    {(onClose) => {
-                        return (<>
-                            <ModalHeader>Zawieszenie członka</ModalHeader>
-                            <ModalBody>
-                                <div className="grid grid-cols-12 gap-2">
-                                    <DatePicker
-                                        label="Data zawieszenia"
-                                        className="col-span-6"
-                                        variant="bordered"
-                                        value={suspension.suspensionDate}
-                                    />
-                                    <DatePicker
-                                        label="Koniec zawieszenia"
-                                        className="col-span-6"
-                                        variant="bordered"
-                                        value={suspension.endDate}
-                                    />
-                                    <Textarea
-                                        label="Powód zawieszenia"
-                                        className="col-span-12"
-                                        variant="bordered"
-                                        value={suspension.reason}
-
-                                        onChange={(e) => {
-                                            suspension.reason = e.target.value
-                                        }}
-                                    />
-                                    <DatePicker
-                                        label="Termin na odwołanie"
-                                        className="col-span-6"
-                                        variant="bordered"
-                                        value={suspension.appealDate}
-                                    />
-                                    <div className=" bg-danger-200 text-danger p-4 font-bold rounded-md col-span-12">
-                                        Zawieszenie członka jest operacją krytyczną. Wpisz numer swojej karty aby potwierdzić zawieszenie.
-                                    </div>
-                                    <Input
-                                        label="Numer karty"
-                                        className="col-span-12"
-                                        color="danger"
-                                        variant="bordered"
-                                        value={suspension.card}
-                                        onChange={(e) => {
-                                            if (user?.nickname === undefined) setBlocked(true);
-                                            else if (e.target.value === user.nickname) setBlocked(false);
-                                            else setBlocked(true);
-                                        }} />
-                                </div>
-                            </ModalBody>
-                            <ModalFooter>
-                                <Button
-                                    color="secondary"
-                                    variant="shadow"
-                                    isDisabled={blocked}
-                                    onClick={() => {
-                                        suspend({ id: data?.id ?? "", reason: suspension.reason, suspensionDate: suspension.suspensionDate.toDate(getLocalTimeZone()), endDate: suspension.endDate.toDate(getLocalTimeZone()), appealDate: suspension.appealDate.toDate(getLocalTimeZone()) })
-                                        onClose();
-                                    }}
-
-                                >Zapisz</Button>
-                                <Button
-                                    onClick={onClose}
-                                    color="danger" variant="light">Anuluj</Button>
-                            </ModalFooter>
-                        </>)
-                    }}
-
-                </ModalContent >
-            </Modal>
-        )
-    }
-
-    const ExpellModal = ({ isOpen, onOpenChange, onClose }: {
-        isOpen: boolean,
-        onOpenChange: () => void,
-        onClose?: () => void
-    }) => {
-        let defaultDate = today(getLocalTimeZone());
-        let expulsion: {
-            reason: string,
-            expellDate: DateValue,
-            appealDate: DateValue,
-            card?: string
-        } = {
-            reason: "",
-            expellDate: defaultDate,
-            appealDate: defaultDate
-        }
-        const [blocked, setBlocked] = useState(expulsion.card !== user?.nickname);
-
-        return (
-            <Modal backdrop="opaque"
-                size="xl"
-                isOpen={isOpen}
-                onClose={onClose}
-                onOpenChange={onOpenChange}
-                classNames={{
-                    backdrop: "bg-gradient-to-t from-zinc-900 to-zinc-900/10 backdrop-opacity-20"
-                }}>
-                <ModalContent>
-                    {(onClose) => {
-                        return (<>
-                            <ModalHeader>Wykluczenie członka</ModalHeader>
-                            <ModalBody>
-                                <div className="grid grid-cols-12 gap-2">
-                                    <DatePicker
-                                        label="Data zawieszenia"
-                                        className="col-span-6"
-                                        variant="bordered"
-                                        value={expulsion.expellDate}
-                                    />
-
-                                    <Textarea
-                                        label="Powód wykluczenia"
-                                        className="col-span-12"
-                                        variant="bordered"
-                                        value={expulsion.reason}
-
-                                    />
-                                    <DatePicker
-                                        label="Termin na odwołanie"
-                                        className="col-span-6"
-                                        variant="bordered"
-                                        value={expulsion.appealDate}
-                                    />
-                                    <div className=" bg-danger-200 text-danger p-4 font-bold rounded-md col-span-12">
-                                        Wykluczenie członka jest operacją krytyczną. Wpisz numer swojej karty aby potwierdzić wykluczenie.
-                                    </div>
-                                    <Input
-                                        label="Numer karty"
-                                        className="col-span-12"
-                                        color="danger"
-                                        variant="bordered"
-                                        value={expulsion.card}
-                                        onChange={(e) => {
-                                            if (user?.nickname === undefined) setBlocked(true);
-                                            else if (e.target.value === user.nickname) setBlocked(false);
-                                            else setBlocked(true);
-                                        }} />
-                                </div>
-                            </ModalBody>
-                            <ModalFooter>
-                                <Button
-                                    color="secondary"
-                                    variant="shadow"
-                                    isDisabled={blocked}
-                                    onClick={() => {
-                                        expell({ id: data?.id ?? "", reason: expulsion.reason, expellDate: expulsion.expellDate.toDate(getLocalTimeZone()), appealDate: expulsion.appealDate.toDate(getLocalTimeZone()) })
-                                        onClose();
-                                    }}
-
-                                >Zapisz</Button>
-                                <Button
-                                    onClick={onClose}
-                                    color="danger" variant="light">Anuluj</Button>
-                            </ModalFooter>
-                        </>)
-                    }}
-                </ModalContent >
-            </Modal>
-        )
-    }
-
-    const TerminateModal = ({ isOpen, onOpenChange, onClose }: {
-        isOpen: boolean,
-        onOpenChange: () => void,
-        onClose?: () => void
-    }) => {
-        let defaultDate = today(getLocalTimeZone());
-        let termination: {
-            date: DateValue,
-            card?: string
-        } = {
-            date: defaultDate
-        }
-        const [blocked, setBlocked] = useState(termination.card !== user?.nickname);
-
-        return (
-            <Modal backdrop="opaque"
-                size="xl"
-                isOpen={isOpen}
-                onClose={onClose}
-                onOpenChange={onOpenChange}
-                classNames={{
-                    backdrop: "bg-gradient-to-t from-zinc-900 to-zinc-900/10 backdrop-opacity-20"
-                }}>
-                <ModalContent>
-                    {(onClose) => {
-                        return (<>
-                            <ModalHeader>Wygaszenie członkostwa</ModalHeader>
-                            <ModalBody>
-                                <div className="grid grid-cols-12 gap-2">
-                                    <DatePicker
-                                        label="Data Wygaszenia"
-                                        className="col-span-6"
-                                        variant="bordered"
-                                        value={termination.date}
-                                    />
-
-
-                                    <div className=" bg-danger-200 text-danger p-4 font-bold rounded-md col-span-12">
-                                        Wygaszenie członkostwa jest operacją nieodwracalną. Wpisz numer swojej karty aby potwierdzić wygaszenie.
-                                    </div>
-                                    <Input
-                                        label="Numer karty"
-                                        className="col-span-12"
-                                        color="danger"
-                                        variant="bordered"
-                                        value={termination.card}
-                                        onChange={(e) => {
-                                            if (user?.nickname === undefined) setBlocked(true);
-                                            else if (e.target.value === user.nickname) setBlocked(false);
-                                            else setBlocked(true);
-                                        }} />
-                                </div>
-                            </ModalBody>
-                            <ModalFooter>
-                                <Button
-                                    color="secondary"
-                                    variant="shadow"
-                                    isDisabled={blocked}
-                                    onClick={() => {
-                                        terminate({ id: data?.id ?? "", date: termination.date.toDate(getLocalTimeZone()) });
-                                        onClose();
-                                    }}
-
-                                >Zapisz</Button>
-                                <Button
-                                    onClick={onClose}
-                                    color="danger" variant="light">Anuluj</Button>
-                            </ModalFooter>
-                        </>)
-                    }}
-                </ModalContent >
-            </Modal>
-        )
-    }
+    const { t } = useTranslation();
 
     const paidCurrentFee = (): boolean => {
         let current = data?.fees.find((fee) => fee.year === currentYear);
@@ -578,10 +237,18 @@ export default function MemberView({ data }: { data: MemberDetailsView }) {
                     </div>
                 </CardBody>
             </Card>
-            {FeeOverrideModal({ isOpen: feeOverridDisclousere.isOpen, onOpenChange: feeOverridDisclousere.onOpenChange })}
-            {SuspendModal({ isOpen: suspendDisclosure.isOpen, onOpenChange: suspendDisclosure.onOpenChange })}
-            {ExpellModal({ isOpen: expellDisclosure.isOpen, onOpenChange: expellDisclosure.onOpenChange })}
-            {TerminateModal({ isOpen: terminateDisclosure.isOpen, onOpenChange: terminateDisclosure.onOpenChange })}
+            <ApplicationModal title={t('admin_members_fee_override_title')} isOpen={feeOverridDisclousere.isOpen} onOpenChange={feeOverridDisclousere.onOpenChange}>
+                <FeeOverride data={data} onClose={feeOverridDisclousere.onClose} />
+            </ApplicationModal>
+            <ApplicationModal title={t('admin_members_suspend_title')} isOpen={suspendDisclosure.isOpen} onOpenChange={suspendDisclosure.onOpenChange}>
+                <SuspendMember data={data} onClose={suspendDisclosure.onClose} />
+            </ApplicationModal>
+            <ApplicationModal title={t('admin_members_expell_title')} isOpen={expellDisclosure.isOpen} onOpenChange={expellDisclosure.onOpenChange}>
+                <ExpellMember data={data} onClose={expellDisclosure.onClose} />
+            </ApplicationModal>
+            <ApplicationModal title={t('admin_members_termination_title')} isOpen={terminateDisclosure.isOpen} onOpenChange={terminateDisclosure.onOpenChange}>
+                <TerminateMember data={data} onClose={terminateDisclosure.onClose} />
+            </ApplicationModal>
         </>
     );
 };

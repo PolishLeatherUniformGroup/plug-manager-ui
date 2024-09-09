@@ -1,4 +1,3 @@
-import { menu } from "@nextui-org/theme";
 
 export type SiteConfig = typeof siteConfig;
 
@@ -7,47 +6,42 @@ export const siteConfig = {
   description: "Stowarzyszenie Polish Leather Uniform Group",
   navItems: [
     {
-      label: "Home",
+      label: "nav_home",
       href: "/",
       isProtected: false,
       hasMenu: false,
     },
     {
-      label: "Stowarzyszenie",
+      label: "nav_association",
       href: "/about",
       isProtected: false,
       hasMenu: true,
       menuItems: [
         {
-          label: "Dołącz",
+          label: "nav_association_join",
           href: "/join",
           order: 1,
         },
         {
-          label: "Kontakt",
+          label: "nav_association_contact",
           href: "/contact",
           order: 100,
         }
       ]
     },
     {
-      label: "Strefa członka",
+      label: "nav_member_zone",
       href: "/members",
       isProtected: true,
       hasMenu: false,
       feature: 'members_zone'
     },
     {
-      label: "Wydarzenia",
+      label: "nav_events",
       href: "/events",
       isProtected: false,
       hasMenu: false,
       feature: 'events_management'
     }
   ],
-  links: {
-    facebook: "https://www.facebook.com/groups/plug.group",
-    twitter: "https://x.com/plugPL",
-    instagram: "https://www.instagram.com/plug.group.official/",
-  },
 };

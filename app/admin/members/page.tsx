@@ -1,14 +1,11 @@
 'use server';
-
 import { getSession } from "@auth0/nextjs-auth0";
-import UsersTable from "../../../components/admin/members/users-table";
 import { Suspense } from "react";
 import { Spinner } from "@nextui-org/react";
 import { ApiClient } from "../../../services/api.client";
 import { apiConfig } from "../../../config/api";
-import { Member } from "../../../models/member";
-import { MemberView } from "./data";
-
+import { Member, MemberView } from "../../../models/members";
+import { MembersTable } from "../../../components/admin/members/members-table";
 
 
 export default async function AdminMembers() {
@@ -27,7 +24,7 @@ export default async function AdminMembers() {
     return (
         <div className="w-full">
             <Suspense fallback={<div className="justify-center"><Spinner color="primary" size="lg" /></div>} >
-                <UsersTable data={data} />
+                <MembersTable data={data} />
             </Suspense>
         </div>
     );

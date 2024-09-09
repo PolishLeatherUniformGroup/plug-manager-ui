@@ -10,3 +10,12 @@ export type Member = {
     address?: Address;
     status: number;
 };
+
+export type MemberView = {
+    id: string;
+    card: string;
+    name: string;
+    email: string;
+    joinDate: string;
+    status: string;
+};
