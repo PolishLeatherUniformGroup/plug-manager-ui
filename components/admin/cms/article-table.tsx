@@ -3,17 +3,17 @@ import { EllipsisVerticalIcon, ChevronDownIcon, PlusIcon, EyeIcon, EyeSlashIcon 
 import { Button, ButtonGroup } from "@nextui-org/button";
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from "@nextui-org/dropdown";
 import React, { useState } from "react";
-import { SectionView } from "../../../app/admin/cms/sections/data";
+import { ArticleView } from "../../../app/admin/cms/sections/data";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { Selection } from "@nextui-org/react";
 import { DataTable, DataTableColumn, Filters } from "../../common/data-table";
 
-interface SectionsTableProps {
-    data: SectionView[];
+interface ArticlesTableProps {
+    data: ArticleView[];
     header?: string;
 }
-export default function SectionsTable({ data ,header }: SectionsTableProps) {
+export default function ArticlesTable({ data ,header }: ArticlesTableProps) {
     const router = useRouter();
 
     const [visibilityFilter, setVisibilityFilter] = useState<Selection>("all");
@@ -46,8 +46,8 @@ export default function SectionsTable({ data ,header }: SectionsTableProps) {
         { name: "Nieopublikowana", uid: "false" },
     ];
 
-    const renderCell = React.useCallback((section: SectionView, columnKey: React.Key) => {
-        const cellValue = section[columnKey as keyof SectionView];
+    const renderCell = React.useCallback((section: ArticleView, columnKey: React.Key) => {
+        const cellValue = section[columnKey as keyof ArticleView];
 
         switch (columnKey) {
             case "visible":

@@ -30,7 +30,8 @@ interface DataTableProps<T extends TableData> {
     filterNames: string[],
     filters: Filters,
     topContent: () => ReactNode,
-    texts: Texts
+    texts: Texts,
+    header?: string
 }
 export function DataTable<T extends TableData>(props: DataTableProps<T>) {
     const { t } = useTranslation();
@@ -97,21 +98,24 @@ export function DataTable<T extends TableData>(props: DataTableProps<T>) {
     const topContent = useMemo(() => {
 
         return (
-            <div className="flex flex-col gap-4">
-                {props.topContent()}
-                <div className="flex justify-between items-center">
-                    <span className="text-foreground text-small">{props.texts["counts"]}:<b>{props.data.length}</b></span>
-                    <label className="flex items-center text-foreground text-small">
-                        {t('table_rows_per_page')}
-                        <select
-                            className="bg-transparent outline-none text-foreground text-small ml-1"
-                            onChange={onRowsPerPageChange}
-                        >
-                            <option value="5">5</option>
-                            <option value="10">10</option>
-                            <option value="15">15</option>
-                        </select>
-                    </label>
+            <div className="flex flex-col">
+                <div className="w-full p-2 my-2 rounded-lg font-bold bg-default-200 border-b-1 border-primary-300">{props.header && <h2>{props.header}</h2>}</div>
+                <div className="flex flex-col gap-4">
+                    {props.topContent()}
+                    <div className="flex justify-between items-center">
+                        <span className="text-foreground text-small">{props.texts["counts"]}:<b>{props.data.length}</b></span>
+                        <label className="flex items-center text-foreground text-small">
+                            {t('table_rows_per_page')}
+                            <select
+                                className="bg-transparent outline-none text-foreground text-small ml-1"
+                                onChange={onRowsPerPageChange}
+                            >
+                                <option value="5">5</option>
+                                <option value="10">10</option>
+                                <option value="15">15</option>
+                            </select>
+                        </label>
+                    </div>
                 </div>
             </div>
         )
