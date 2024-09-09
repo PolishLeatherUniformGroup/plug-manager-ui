@@ -3,7 +3,7 @@ import { Controller, useForm } from "react-hook-form";
 import { contactSchema, ContactSchema } from "../../app/schemas/contact-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Card, CardHeader } from "@nextui-org/card";
-import { title } from "../primitives";
+import { title } from "../common/primitives";
 import { Input, Textarea } from "@nextui-org/input";
 import { Button, Select, SelectItem } from "@nextui-org/react";
 import { useTranslation } from "react-i18next";

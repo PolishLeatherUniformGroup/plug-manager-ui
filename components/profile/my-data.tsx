@@ -6,8 +6,9 @@ import { Chip } from "@nextui-org/chip";
 import { DatePicker } from "@nextui-org/date-picker";
 import { Input } from "@nextui-org/input";
 import { useState } from "react";
+import { EditableInput } from "../common/editable-input";
 
-export function MyData(){
+export function MyData() {
     const [editEmail, setEditEmail] = useState(false);
     const [editPhone, setEditPhone] = useState(false);
     const [editBirth, setEditBirth] = useState(false);
@@ -26,16 +27,8 @@ export function MyData(){
                     </div>
                 </div>
                 <div className="grid grid-cols-12 gap-2">
-                    <Input label="Imię"
-                        name="name"
-                        disabled
-                        className="col-span-6"
-                    />
-                    <Input label="Nazwisko"
-                        name="name"
-                        disabled
-                        className="col-span-6"
-                    />
+                    <EditableInput label="Imię" name="given_name" disabled fieldType="text" onUpdate={(value) => console.log(value)} />
+                    <EditableInput label="Nazwisko" name="family_name" disabled fieldType="text" onUpdate={(value) => console.log(value)} />
                     <DatePicker
                         label="Data urodzenia"
                         name="date"
@@ -51,96 +44,18 @@ export function MyData(){
                     <h2 className="col-span-12">
                         Dane kontaktowe
                     </h2>
-                    <Input label="Telefon"
-                        name="phone"
-                        type="tel"
-                        isReadOnly={!editPhone}
-                        className="col-span-6"
-                        onBlur={() => setEditPhone(false)}
+                    <EditableInput label="Telefon" name="phone" fieldType="tel" onUpdate={(value) => console.log(value)} />
+                    <EditableInput label="Email" name="email" fieldType="email" onUpdate={(value) => console.log(value)} />
 
-                        endContent={editPhone ? "" :
-                            <Button color="default" variant="faded" size="sm"
-                                isIconOnly onClick={() => setEditPhone(true)}>
-                                <PencilIcon className='w-4 h-4' />
-                            </Button>
-                        }
-                    />
-                    <Input label="Email"
-                        name="email"
-                        type="email"
-                        isReadOnly={!editEmail}
-                        className="col-span-6"
-                        onBlur={() => setEditEmail(false)}
+                    <h3>Address</h3>
 
-                        endContent={editEmail ? "" :
-                            <Button color="default" variant="faded" size="sm"
-                                isIconOnly onClick={() => setEditEmail(true)}>
-                                <PencilIcon className='w-4 h-4' />
-                            </Button>
-                        }
-                    />
-                    <Chip className="col-span-12 w-full" color="default" radius="sm" size="lg"
-                        startContent={editAddress ? "" :
-                            <Button color="default" variant="faded" size="sm"
-                                isIconOnly onClick={() => setEditAddress(true)}>
-                                <PencilIcon className='w-4 h-4' />
-                            </Button>
-                        }
-                    >
-                        <h3>Address</h3>
-                    </Chip>
-
-                    <Input
-                        className="col-span-12 md:col-span-6"
-                        type="text"
-                        label="Kraj"
-                        isReadOnly={!editAddress}
-                    />
-
-                    <Input
-                        className="col-span-12 md:col-span-6"
-                        type="text"
-                        label="Region"
-                        isReadOnly={!editAddress} />
-
-                    <Input
-                        className="col-span-12 md:col-span-6"
-                        type="text"
-                        label="Miasto"
-                        isReadOnly={!editAddress} />
-
-                    <Input
-                        className="col-span-12 md:col-span-6"
-                        type="text"
-                        label="Kod pocztowy"
-                        isReadOnly={!editAddress}
-                    />
-                    <Input
-                        className="col-span-12 md:col-span-6"
-                        type="text"
-                        label="Ulica"
-                        isReadOnly={!editAddress}
-                    />
-                    <Input
-                        className="col-span-6 md:col-span-3"
-                        type="text"
-                        label="Numer"
-                        isReadOnly={!editAddress}
-                    />
-                    <Input
-                        className="col-span-6 md:col-span-3"
-                        type="text"
-                        label="Mieszkanie"
-                        isReadOnly={!editAddress}
-                    />
-                    {editAddress ? <div className="col-span-12 flex flex-row gap-2 px-6 py-4 justify-end">
-                        <Button color="success" variant="flat" size="sm" onClick={() => setEditAddress(false)}>
-                            Zapisz
-                        </Button>
-                        <Button color="danger" variant="flat" size="sm" onClick={() => setEditAddress(false)}>
-                            Anuluj
-                        </Button>
-                    </div> : ""}
+                    <EditableInput label="Kraj" size="md" name="country" fieldType="text" onUpdate={(value) => console.log(value)} />
+                    <EditableInput label="Region" size="md" name="region" fieldType="text" onUpdate={(value) => console.log(value)} />
+                    <EditableInput label="Miasto" size="md" name="city" fieldType="text" onUpdate={(value) => console.log(value)} />
+                    <EditableInput label="Kod pocztowy" size="md" name="postal_code" fieldType="text" onUpdate={(value) => console.log(value)} />
+                    <EditableInput label="Ulica" size="md" name="city" fieldType="text" onUpdate={(value) => console.log(value)} />
+                    <EditableInput label="Nr domu" size="sm" name="postal_code" fieldType="text" onUpdate={(value) => console.log(value)} />
+                    <EditableInput label="Nr mieszkania" size="sm" name="postal_code" fieldType="text" onUpdate={(value) => console.log(value)} />
                 </div>
 
             </CardBody>

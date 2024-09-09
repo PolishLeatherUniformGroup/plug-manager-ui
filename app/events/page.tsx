@@ -1,4 +1,4 @@
-import { title } from "@/components/primitives";
+import { title } from "@/components/common/primitives";
 import EventItem from "../../components/events/event-item";
 
 export default function EventsPage() {

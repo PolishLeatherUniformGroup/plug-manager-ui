@@ -1,4 +1,4 @@
-import ComingSoon from "../../components/coming-soon";
+import ComingSoon from "../../components/common/coming-soon";
 import { features } from "../../config/features";
 
 export default function MembersLayout({

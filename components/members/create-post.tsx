@@ -1,6 +1,6 @@
 import { Button } from "@nextui-org/button";
 import { Card, CardBody, CardFooter, CardHeader } from "@nextui-org/card";
-import { subtitle, title } from "../primitives";
+import { subtitle, title } from "../common/primitives";
 import { Divider } from "@nextui-org/divider";
 import { CheckBadgeIcon, PencilIcon } from "@heroicons/react/16/solid";
 import { Badge } from "@nextui-org/badge";

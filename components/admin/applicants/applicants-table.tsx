@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Selection, useDisclosure } from "@nextui-org/react";
 import { ApplicationModal } from "../../common/application-modal";
-import UploadForm from "../../upload-form";
+import UploadForm from "../../forms/upload-form";
 import { useTranslation } from "react-i18next";
 import { ApplicantItem } from "../../../models/applicants";
 

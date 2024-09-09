@@ -1,9 +1,9 @@
+import { MemeberImportData } from "../app/api/import/csvParser";
+import { ApiConfig } from "../config/api";
+import { Applicant } from "../models/applicants";
+import { Fee } from "../models/member-fee";
+import { Member } from "../models/members";
 
-import { Fee } from '../app/admin/members/[id]/data';
-import { MemeberImportData } from '../app/api/import/csvParser';
-import { ApiConfig } from '../config/api';
-import { Applicant } from '../models/applicant';
-import { Member } from '../models/member';
 
 export type ImportData = {
     cardNumber: string,

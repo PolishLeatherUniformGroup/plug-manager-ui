@@ -12,10 +12,10 @@ import { Link } from "@nextui-org/link";
 import NextLink from "next/link";
 import clsx from "clsx";
 import { siteConfig } from "@/config/site";
-import { ThemeSwitch } from "@/components/theme-switch";
+import { ThemeSwitch } from "@/components/layout/theme-switch";
 import {
   Logo,
-} from "@/components/icons";
+} from "@/components/common/icons";
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from "@nextui-org/dropdown";
 import { User } from "@nextui-org/user";
 import { UserProfile, useUser } from "@auth0/nextjs-auth0/client";

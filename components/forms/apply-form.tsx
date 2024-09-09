@@ -8,7 +8,7 @@ import { Button } from "@nextui-org/button";
 import { Card, CardBody } from "@nextui-org/card";
 import { getLocalTimeZone, today } from "@internationalized/date";
 import { ApplySchema, applySchema } from "@/app/schemas/apply-schema";
-import { subtitle, title } from "../primitives";
+import { subtitle, title } from "../common/primitives";
 import { useTranslation } from "react-i18next";
 
 export default function ApplyForm() {

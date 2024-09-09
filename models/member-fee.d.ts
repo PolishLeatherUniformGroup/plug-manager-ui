@@ -4,3 +4,10 @@ export type MemberFee = {
     dueDate: Date;
     paidDate?: Date;
 };
+
+export type Fee = {
+    year: number,
+    dueAmount: number,
+    dueDate: string,
+    paidDate?: string
+}

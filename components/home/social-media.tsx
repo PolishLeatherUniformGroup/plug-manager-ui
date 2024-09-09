@@ -1,6 +1,6 @@
 'use client';
 import { useTranslation } from "react-i18next";
-import { FacebookIcon, InstagramIcon, XIcon } from "../icons";
+import { FacebookIcon, InstagramIcon, XIcon } from "../common/icons";
 
 export default function SocialMedia() {
     const { t } = useTranslation();

@@ -1,4 +1,4 @@
-import { subtitle, title } from "@/components/primitives";
+import { subtitle, title } from "@/components/common/primitives";
 
 export default function MembersAnouncementsPage() {
     return (

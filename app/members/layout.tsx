@@ -4,7 +4,7 @@ import clsx from "clsx";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { features } from "../../config/features";
-import ComingSoon from "../../components/coming-soon";
+import ComingSoon from "../../components/common/coming-soon";
 
 
 export default function MembersLayout({

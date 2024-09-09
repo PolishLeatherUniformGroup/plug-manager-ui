@@ -1,6 +1,6 @@
 'use client';
 import { Image } from "@nextui-org/image";
-import { title } from "../primitives";
+import { title } from "../common/primitives";
 import { useTranslation } from "react-i18next";
 
 export default function UpcomingEvent() {

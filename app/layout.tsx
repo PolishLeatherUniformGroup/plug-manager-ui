@@ -5,7 +5,7 @@ import clsx from "clsx";
 import { Providers } from "./providers";
 import { siteConfig } from "@/config/site";
 import { fontSans } from "@/config/fonts";
-import { Navbar } from "@/components/navbar";
+import { Navbar } from "@/components/layout/navbar";
 import { ConfigClient } from "../services/config.client";
 import { apiConfig } from "../config/api";
 import {
@@ -13,8 +13,8 @@ import {
 } from "@nextui-org/navbar";
 import { FeaturesClient } from "../services/features.client";
 import { OrganizationDetails } from "./admin/settings/data";
-import { CookieConsent } from "../components/cookie-consent";
-import Footer from "../components/footer";
+import { CookieConsent } from "../components/layout/cookie-consent";
+import Footer from "../components/layout/footer";
 
 export const metadata: Metadata = {
   title: {

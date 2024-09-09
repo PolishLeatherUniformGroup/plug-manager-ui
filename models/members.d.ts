@@ -19,3 +19,17 @@ export type MemberView = {
     joinDate: string;
     status: string;
 };
+
+export type MemberDetailsView = {
+    id: string;
+    cardNumber: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    phone?: string;
+    birthDate?: Date;
+    joinDate: Date;
+    address?: Address;
+    status: number;
+    fees: Fee[]
+}
