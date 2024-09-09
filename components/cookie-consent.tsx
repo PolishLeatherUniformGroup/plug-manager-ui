@@ -14,7 +14,11 @@ export const CookieConsent = () => {
     useEffect(() => {
         const cookies = new Cookies();
         const consent = cookies.get('plug_privacy_consent');
-        privacyDisclouser.onOpen();
+        if (consent !== undefined) {
+            setShowDialog(true);
+        } else {
+            privacyDisclouser.onOpen();
+        }
     }, []);
 
     const handleConsent = () => {
@@ -26,7 +30,7 @@ export const CookieConsent = () => {
 
     const handleDecline = () => {
         const cookies = new Cookies();
-        cookies.remove('plug_privacy_consent');
+        cookies.set('plug_privacy_consent', false, { path: '/' });
         setShowDialog(true);
         setConsent(false);
     }
@@ -43,8 +47,8 @@ export const CookieConsent = () => {
     }) => {
         return (
             <Modal backdrop="transparent"
-            className="border-3 border-warning"
-            classNames={classNames}
+                className="border-3 border-warning"
+                classNames={classNames}
                 size="5xl"
                 radius="sm"
                 isOpen={isOpen}
@@ -55,7 +59,7 @@ export const CookieConsent = () => {
                 hideCloseButton={true}
                 isKeyboardDismissDisabled={true}
                 onOpenChange={onOpenChange}
-                >
+            >
                 <ModalContent >
                     {(onClose) => {
                         return (<>
@@ -74,7 +78,7 @@ export const CookieConsent = () => {
 
                                 >Wyrażam zgodę</Button>
                                 <Button
-                                    onClick={()=>{
+                                    onClick={() => {
                                         handleDecline();
                                         onClose();
                                     }}
@@ -88,6 +92,6 @@ export const CookieConsent = () => {
     }
 
     return (<>
-    {PrivacyModal({ isOpen: privacyDisclouser.isOpen, onOpenChange: privacyDisclouser.onOpenChange })}
+        {PrivacyModal({ isOpen: privacyDisclouser.isOpen, onOpenChange: privacyDisclouser.onOpenChange })}
     </>)
 };
