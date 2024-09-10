@@ -24,19 +24,33 @@ import LanguageChoose from "./language-choose";
 import { useTranslation } from "react-i18next";
 import { SectionItem } from "../../models/section";
 import { MenuItem } from "./menu-item";
+import { useEffect, useState } from "react";
+import { ApiClient } from "../../services/api.client";
+import { apiConfig } from "../../config/api";
 
 interface NavbarProps {
   features: {
     [key: string]: boolean;
   },
-  menu: SectionItem[]
+}
+const loadMenu = async (language: string) => {
+  const apiClient = new ApiClient(apiConfig);
+  return await apiClient.getMenu(language);
 }
 
 export const Navbar = (props: NavbarProps) => {
   const { user, error, isLoading } = useUser();
+
+  const [menu, setMenu] = useState<SectionItem[]>([]);
   const router = useRouter();
   const darkMode = props.features['dark_mode'];
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  useEffect(() => {
+    console.log('language:', i18n.language);
+    loadMenu(i18n.language).then((menu) => {
+      setMenu(menu);
+    });
+  }, [i18n.language]);
   const userInRole = (role: string, user?: UserProfile): boolean => {
     if (!user) {
       return false;
@@ -109,7 +123,7 @@ export const Navbar = (props: NavbarProps) => {
           </NextLink>
         </NavbarBrand>
         <ul className="hidden lg:flex gap-4 justify-start ml-2  text-default-100 dark:text-gray-100">
-          {props.menu.map((item) => (
+          {menu.map((item) => (
             <MenuItem menu={item} />
           ))}
         </ul>
@@ -119,11 +133,11 @@ export const Navbar = (props: NavbarProps) => {
         className="hidden sm:flex basis-1/5 sm:basis-full text-inherit"
         justify="end"
       >
-        <NavbarItem className="hidden sm:flex gap-2">
+        <NavbarItem key="lang" className="hidden sm:flex gap-2">
           <LanguageChoose />
           {darkMode ? <ThemeSwitch /> : null}
         </NavbarItem>
-        <NavbarItem className="hidden lg:flex">{user ? userMenu : <Button as={Link} href="/api/auth/login">Zaloguj się</Button>}</NavbarItem>
+        <NavbarItem key="login" className="hidden lg:flex">{user ? userMenu : <Button as={Link} href="/api/auth/login">Zaloguj się</Button>}</NavbarItem>
       </NavbarContent>
 
       <NavbarContent className="sm:hidden basis-1 pl-4" justify="end">

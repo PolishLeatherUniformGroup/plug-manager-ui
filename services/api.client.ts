@@ -240,22 +240,27 @@ export class ApiClient {
     }
 
     async getMenu(language: string): Promise<SectionItem[]> {
-        const url = `${this.baseUrl}/sections/${language}`;
+        const url = `${this.baseUrl}/sections/menu/${language}`;
         let response = await this.get(url);
         const data = await response.json();
-        const sections = await Promise.all(data.map(async (item: any) => {
-            let children: SectionItem[] = [];
-            console.log(`Pages of :`, pages);
-            const section: SectionItem = {
-                slug: item.slug,
-                name: item.content.name,
-                pages: pages,
-                subSections: children
-            }
-            console.log('Section :', section);
-            return section;
-        }));
-        console.log('Sections :', sections);
+        const sections = data.map((section: any) => {
+            return {
+                slug: section.slug,
+                name: section.name,
+                pages: section.pages.map((page: any) => ({
+                    slug: page.slug,
+                    name: page.name,
+                } as Item)),
+                subSections: section.submenu.map((sub: any) => ({
+                    slug: sub.slug,
+                    name: sub.name,
+                    pages: sub.pages.map((page: any) => ({
+                        slug: page.slug,
+                        name: page.name,
+                    } as Item))
+                } as SectionItem))
+            } as SectionItem;
+        })
         return sections;
     }
 }
