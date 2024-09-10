@@ -1,8 +1,7 @@
-import CreatePost from "../../components/members/create-post";
-import PostsToolbar from "../../components/members/posts-toolbar";
-import Post from "../../components/members/post";
 import { withPageAuthRequired } from "@auth0/nextjs-auth0";
-import { features } from "../../config/features";
+import CreatePost from "../../../components/members/create-post";
+import PostsToolbar from "../../../components/members/posts-toolbar";
+import Post from "../../../components/members/post";
 
 const MembersPage = withPageAuthRequired(async () => {
     

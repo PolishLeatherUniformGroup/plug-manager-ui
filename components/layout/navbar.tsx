@@ -20,14 +20,16 @@ import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from "@nextui-o
 import { User } from "@nextui-org/user";
 import { UserProfile, useUser } from "@auth0/nextjs-auth0/client";
 import { useRouter } from "next/navigation";
-import { ChevronDownIcon } from "@heroicons/react/24/outline";
 import LanguageChoose from "./language-choose";
 import { useTranslation } from "react-i18next";
+import { SectionItem } from "../../models/section";
+import { MenuItem } from "./menu-item";
 
 interface NavbarProps {
   features: {
     [key: string]: boolean;
-  }
+  },
+  menu: SectionItem[]
 }
 
 export const Navbar = (props: NavbarProps) => {
@@ -96,60 +98,6 @@ export const Navbar = (props: NavbarProps) => {
       }
     </Dropdown></>);
 
-  const navbarItem = (item: any) => {
-    return (<NavbarItem key={item.href}>
-      <NextLink
-        className={clsx(
-          "text-inherit data-[active=true]:text-primary data-[active=true]:font-bold",
-        )}
-        color="foreground"
-        href={item.href}
-      >
-        {t(item.label)}
-      </NextLink>
-    </NavbarItem>)
-  };
-
-  const navbarDropdownItem = (item: any) => (
-    <Dropdown>
-      <NavbarItem className="cursor-pointer">
-        <DropdownTrigger>
-          <Link
-
-            className={clsx(
-              "text-inherit data-[active=true]:text-primary data-[active=true]:font-bold cursor-pointer",
-            )} >
-            {t(item.label)}
-            <ChevronDownIcon className="w-5 h-5 text-inherit" />
-          </Link>
-        </DropdownTrigger>
-      </NavbarItem>
-      <DropdownMenu
-        aria-label="ACME features"
-        className="w-[340px]"
-        itemClasses={{
-          base: "gap-4",
-        }}
-      >
-        {item.menuItems.map((subitem: any) => (
-          <DropdownItem onClick={() => router.push(subitem.href)}
-            key={subitem.href}
-          >
-            <NextLink
-              className={clsx(
-                "text-inherit data-[active=true]:text-primary data-[active=true]:font-bold",
-              )}
-              color="foreground"
-              href={subitem.href}
-            >
-              {t(subitem.label)}
-            </NextLink>
-          </DropdownItem>
-        ))}
-      </DropdownMenu>
-    </Dropdown>
-  )
-
   return (
     <NextUINavbar maxWidth="xl" isBlurred={false} position="sticky" className="bg-primary-700 text-default-100 shadow-md dark:bg-background dark:shadow-none
      dark:text-gray-100" >
@@ -161,15 +109,9 @@ export const Navbar = (props: NavbarProps) => {
           </NextLink>
         </NavbarBrand>
         <ul className="hidden lg:flex gap-4 justify-start ml-2  text-default-100 dark:text-gray-100">
-          {siteConfig.navItems.map((item) => {
-            if ((item.isProtected && user) || !item.isProtected) {
-              if (item.hasMenu) {
-                return navbarDropdownItem(item);
-              } else if (item.feature === undefined || props.features[item.feature] === true) {
-                return navbarItem(item);
-              }
-            }
-          })}
+          {props.menu.map((item) => (
+            <MenuItem menu={item} />
+          ))}
         </ul>
       </NavbarContent>
 

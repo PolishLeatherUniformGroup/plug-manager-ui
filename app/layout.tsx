@@ -16,6 +16,7 @@ import { OrganizationDetails } from "./admin/settings/data";
 import { CookieConsent } from "../components/layout/cookie-consent";
 import Footer from "../components/layout/footer";
 import { ApiClient } from "../services/api.client";
+import { SectionItem } from "../models/section";
 
 export const metadata: Metadata = {
   title: {
@@ -42,14 +43,6 @@ export default async function RootLayout({
 }) {
 
   const apiClient = new ApiClient(apiConfig);
-  const notConfigured = (
-    <NextUINavbar maxWidth="xl" isBlurred={false} position="sticky" className="bg-primary-700 text-default-100 shadow-md dark:bg-background dark:shadow-none
-     dark:text-gray-100" >
-
-    </NextUINavbar>
-  );
-
-
   const featuresClient = new FeaturesClient(apiConfig);
   const configClient = new ConfigClient(apiConfig);
   const features = {
@@ -57,16 +50,65 @@ export default async function RootLayout({
     events_management: await featuresClient.isFeatureEnabled("events_management"),
     dark_mode: await featuresClient.isFeatureEnabled("dark_mode"),
   };
-
   const orgDetails: OrganizationDetails = {
     name: await configClient.getString("org_name") ?? '',
     nip: await configClient.getString("org_nip") ?? '',
     regon: await configClient.getString("org_regon") ?? '',
     krs: await configClient.getString("org_krs") ?? undefined
   };
+  const menu:SectionItem[] = [{
+    slug: 'organization',
+    name: 'Stowarzyszenie',
+    pages: [{
+      slug: 'join',
+      name: 'Dołącz',
+    },{
+      slug: 'history',
+      name: 'Historia',
+    },{
+      slug: 'rules',
+      name: 'Regulamin',
+    }, {
+      slug: 'contact',
+      name: 'Kontakt',
+    }],
+    subSections: [{
+      slug: 'privacy',
+      name: 'Prywatność',
+      pages: [{
+        slug: 'privacy-policy',
+        name: 'Polityka prywatności',
+      }, {
+        slug: 'gdpr',
+        name: 'KlauzulaRODO',
+      }],
+      subSections: [],
+    },{
+      slug: 'misters',
+      name: 'Misterzy',
+      pages: [{
+        slug: 'rubber',
+        name: 'Mister Rubber Poland',
+      }, {
+        slug: 'leather',
+        name: 'Mister Leatherman Poland',
+      }],
+      subSections: [],
+    }],
+  },{
+    slug: 'events',
+    name: 'Wydarzenia',
+    pages:[],
+    subSections: [],
+  },{
+    slug: 'members',
+    name: 'Strefa członka',
+    pages:[],
+    subSections: [],
+  }]
+
 
   return (
-
     <html suppressHydrationWarning lang="en">
       <head />
       <body
@@ -77,7 +119,7 @@ export default async function RootLayout({
       >
         <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
           <div className="relative flex flex-col min-h-dvh">
-            <Navbar features={features} />
+            <Navbar features={features}  menu={menu}/>
             <main className="container mx-auto max-w-7xl px-6 flex-grow">
               {children}
             </main>
