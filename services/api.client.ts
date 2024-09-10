@@ -237,4 +237,8 @@ export class ApiClient {
         let response = await this.put(url, converted);
 
     }
+
+    async getSections(){
+        
+    }
 }

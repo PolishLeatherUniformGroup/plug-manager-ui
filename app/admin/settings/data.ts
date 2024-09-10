@@ -11,4 +11,5 @@ export type OrganizationSetting = {
     value: string;
     type: "string" | "number" | "boolean";
     label: string;
+    description?: string;
 }

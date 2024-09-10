@@ -15,6 +15,7 @@ import { FeaturesClient } from "../services/features.client";
 import { OrganizationDetails } from "./admin/settings/data";
 import { CookieConsent } from "../components/layout/cookie-consent";
 import Footer from "../components/layout/footer";
+import { ApiClient } from "../services/api.client";
 
 export const metadata: Metadata = {
   title: {
@@ -39,6 +40,8 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+
+  const apiClient = new ApiClient(apiConfig);
   const notConfigured = (
     <NextUINavbar maxWidth="xl" isBlurred={false} position="sticky" className="bg-primary-700 text-default-100 shadow-md dark:bg-background dark:shadow-none
      dark:text-gray-100" >

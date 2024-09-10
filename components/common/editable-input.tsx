@@ -2,6 +2,7 @@
 import { CheckIcon, PencilIcon, QuestionMarkCircleIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Button, ButtonGroup } from "@nextui-org/button";
 import { Input } from "@nextui-org/input";
+import { Popover, PopoverContent, PopoverTrigger } from "@nextui-org/react";
 import { Tooltip } from "@nextui-org/tooltip";
 import { useEffect, useState } from "react";
 
@@ -41,20 +42,11 @@ export function EditableInput(props: EditableInputProps) {
     </ButtonGroup>)
 
     const defaultButtons = (<ButtonGroup size="sm">
-        {props.disabled === true ? <Button isIconOnly size="sm" variant="flat" color="default"
+        {props.disabled !== true ? <Button isIconOnly size="sm" variant="flat" color="default"
             onClick={() => setEditable(true)}
         >
             <PencilIcon className="w-4 h-4" />
         </Button> : null}
-        {!props.description &&
-            <Button isIconOnly size="sm" variant="flat" color="default">
-                <QuestionMarkCircleIcon className="w-4 h-4" />
-            </Button>}
-        {props.description && <Tooltip content={props.description}>
-            <Button isIconOnly size="sm" variant="flat" color="default">
-                <QuestionMarkCircleIcon className="w-4 h-4" />
-            </Button>
-        </Tooltip>}
     </ButtonGroup>);
     const className = props.size === 'sm' ? 'col-span-3' : props.size === 'md' ? 'col-span-6' : 'col-span-9';
     return (
@@ -65,6 +57,8 @@ export function EditableInput(props: EditableInputProps) {
             placeholder={props.placeholder}
             className={className}
             value={value}
+            onValueChange={(value) => setValue(value)}
+            description={props.description}
             endContent={editable ? editButtons : defaultButtons}
         />
     );

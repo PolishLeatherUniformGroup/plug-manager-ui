@@ -11,9 +11,11 @@ export const ConfigurationKeys = {
 }
 export type ConfigValue = {
     key: string;
+    group: string;
+    name: string;
     value: string;
     valueType: "string" | "number" | "boolean";
-    description: string;
+    description?: string;
 }
 
 export class ConfigClient {
@@ -55,8 +57,13 @@ export class ConfigClient {
 
     async getAll(): Promise<ConfigValue[]> {
         try {
-            const response = await fetch(`${this.baseUrl}/config`);
-            return await response.json() as ConfigValue[];
+            const response = await fetch(`${this.baseUrl}/config`, {
+                next: {
+                    revalidate: 0
+                }
+            });
+            const data = await response.json() as ConfigValue[];
+            return data;
         } catch (e) {
             return [];
         }

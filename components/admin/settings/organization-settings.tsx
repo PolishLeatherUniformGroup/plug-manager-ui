@@ -1,3 +1,4 @@
+'use client';
 import { Card, CardBody, CardHeader } from "@nextui-org/card";
 import { Switch } from "@nextui-org/switch";
 import { OrganizationSetting } from "../../../app/admin/settings/data";
@@ -26,7 +27,7 @@ export default function OrganizationSettingsEdit(props: OrganizationSettingsEdit
                         switch (setting.type) {
                             case "string":
                             case "number":
-                                return <EditableInput name={setting.key} value={setting.value} label={setting.label} size="md"
+                                return <EditableInput name={setting.key} value={setting.value} description={setting.description} label={setting.label} size="md"
                                     onUpdate={(value) => udpateSetting(setting.key, value ?? "")} fieldType="text"
                                 />;
                             case "boolean":
