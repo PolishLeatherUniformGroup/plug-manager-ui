@@ -99,7 +99,7 @@ export function DataTable<T extends TableData>(props: DataTableProps<T>) {
 
         return (
             <div className="flex flex-col">
-                <div className="w-full p-2 my-2 rounded-lg font-bold bg-default-200 border-b-1 border-primary-300">{props.header && <h2>{props.header}</h2>}</div>
+                {props.header && <div className="w-full p-2 my-2 rounded-lg font-bold bg-default-200 border-b-1 border-primary-300"> <h2>{props.header}</h2></div>}
                 <div className="flex flex-col gap-4">
                     {props.topContent()}
                     <div className="flex justify-between items-center">

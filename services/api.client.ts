@@ -3,7 +3,7 @@ import { ApiConfig } from "../config/api";
 import { Applicant } from "../models/applicants";
 import { Fee } from "../models/member-fee";
 import { Member } from "../models/members";
-import { Item, SectionItem } from "../models/section";
+import { Item, SectionItem, SectionView } from "../models/section";
 
 
 export type ImportData = {
@@ -234,7 +234,6 @@ export class ApiClient {
                 }
             }))
         };
-        console.log('Converted :', JSON.stringify(converted));
         let response = await this.put(url, converted);
 
     }
@@ -262,5 +261,18 @@ export class ApiClient {
             } as SectionItem;
         })
         return sections;
+    }
+
+    async getSections(): Promise<SectionView[]> {
+        const url = `${this.baseUrl}/sections`;
+        let response = await this.get(url);
+        const data = await response.json();
+        console.log('DATA :', data);
+        return data.map((section: any) => ({
+            id: section.id,
+            slug: section.slug,
+            inMenu: section.showInMenu,
+            published: section.isPublished
+        } as SectionView));
     }
 }

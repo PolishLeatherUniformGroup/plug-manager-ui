@@ -3,17 +3,17 @@ import { EllipsisVerticalIcon, ChevronDownIcon, PlusIcon, EyeIcon, EyeSlashIcon 
 import { Button, ButtonGroup } from "@nextui-org/button";
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from "@nextui-org/dropdown";
 import React, { useState } from "react";
-import { SectionView } from "../../../app/admin/cms/sections/data";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
-import { Selection } from "@nextui-org/react";
+import { Chip, ChipProps, Selection } from "@nextui-org/react";
 import { DataTable, DataTableColumn, Filters } from "../../common/data-table";
+import { SectionView } from "../../../models/section";
 
 interface SectionsTableProps {
     data: SectionView[];
     header?: string;
 }
-export default function SectionsTable({ data ,header }: SectionsTableProps) {
+export default function SectionsTable({ data, header }: SectionsTableProps) {
     const router = useRouter();
 
     const [visibilityFilter, setVisibilityFilter] = useState<Selection>("all");
@@ -29,12 +29,12 @@ export default function SectionsTable({ data ,header }: SectionsTableProps) {
     const columns: DataTableColumn[] = [
         { name: "ID", uid: "id", sortable: true },
         { name: t("sections_slug"), uid: "slug", sortable: true },
-        { name: t("sections_visibility"), uid: "visible", sortable: false },
+        { name: t("sections_visibility"), uid: "inMenu", sortable: false },
         { name: t("sections_published"), uid: "published", sortable: false },
         { name: t("sections_actions"), uid: "actions", sortable: false },
     ];
 
-    const visibleColumns = ["slug", "visible", "published", "actions"];
+    const visibleColumns = ["slug", "inMenu", "published", "actions"];
 
     const visibilityOptions = [
         { name: "W menu", uid: "true" },
@@ -45,22 +45,28 @@ export default function SectionsTable({ data ,header }: SectionsTableProps) {
         { name: "Opublikowana", uid: "true" },
         { name: "Nieopublikowana", uid: "false" },
     ];
+    const publishColorMap: Record<string, ChipProps["color"]> = {
+        "true": "success",
+        "false": "warning",
+    };
 
     const renderCell = React.useCallback((section: SectionView, columnKey: React.Key) => {
         const cellValue = section[columnKey as keyof SectionView];
-
+        console.log('cellValue :', cellValue);
         switch (columnKey) {
-            case "visible":
+            case "inMenu":
                 return (
                     cellValue ? (<EyeIcon className="text-primary w-6 h-6" />) : (<EyeSlashIcon className="text-secondary w-6 h-6" />)
                 );
             case "published":
                 return (
-                    cellValue ? (<EyeIcon className="text-primary w-6 h-6" />) : (<EyeSlashIcon className="text-secondary w-6 h-6" />)
+                    <Chip size="sm" variant="dot" color={publishColorMap[`${section.published}`]}>
+                        {section.published ? "Opublikowana" : "Nieopublikowana"}
+                    </Chip>
                 );
             case "slug":
                 return (
-                    <p className="text-bold text-small capitalize text-foreground/90">{cellValue}</p>
+                    <p className="text-bold text-small text-foreground/90">{cellValue}</p>
                 );
 
             case "actions":
@@ -158,7 +164,7 @@ export default function SectionsTable({ data ,header }: SectionsTableProps) {
     }
     return (
         <>
-        <DataTable
+            <DataTable
                 data={data}
                 columns={columns}
                 visibleColumns={visibleColumns}
@@ -166,7 +172,7 @@ export default function SectionsTable({ data ,header }: SectionsTableProps) {
                 filters={filters}
                 topContent={topContent}
                 filterNames={filterNames}
-                texts={texts} 
+                texts={texts}
                 header={header} />
         </>
     );
