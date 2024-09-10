@@ -17,6 +17,7 @@ import { CookieConsent } from "../components/layout/cookie-consent";
 import Footer from "../components/layout/footer";
 import { ApiClient } from "../services/api.client";
 import { SectionItem } from "../models/section";
+import { Suspense } from "react";
 
 export const metadata: Metadata = {
   title: {
@@ -56,57 +57,9 @@ export default async function RootLayout({
     regon: await configClient.getString("org_regon") ?? '',
     krs: await configClient.getString("org_krs") ?? undefined
   };
-  const menu:SectionItem[] = [{
-    slug: 'organization',
-    name: 'Stowarzyszenie',
-    pages: [{
-      slug: 'join',
-      name: 'Dołącz',
-    },{
-      slug: 'history',
-      name: 'Historia',
-    },{
-      slug: 'rules',
-      name: 'Regulamin',
-    }, {
-      slug: 'contact',
-      name: 'Kontakt',
-    }],
-    subSections: [{
-      slug: 'privacy',
-      name: 'Prywatność',
-      pages: [{
-        slug: 'privacy-policy',
-        name: 'Polityka prywatności',
-      }, {
-        slug: 'gdpr',
-        name: 'KlauzulaRODO',
-      }],
-      subSections: [],
-    },{
-      slug: 'misters',
-      name: 'Misterzy',
-      pages: [{
-        slug: 'rubber',
-        name: 'Mister Rubber Poland',
-      }, {
-        slug: 'leather',
-        name: 'Mister Leatherman Poland',
-      }],
-      subSections: [],
-    }],
-  },{
-    slug: 'events',
-    name: 'Wydarzenia',
-    pages:[],
-    subSections: [],
-  },{
-    slug: 'members',
-    name: 'Strefa członka',
-    pages:[],
-    subSections: [],
-  }]
 
+  const menu: SectionItem[] = await apiClient.getMenu("pl");
+  //console.log('Menu :', menu);
 
   return (
     <html suppressHydrationWarning lang="en">
@@ -119,7 +72,7 @@ export default async function RootLayout({
       >
         <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
           <div className="relative flex flex-col min-h-dvh">
-            <Navbar features={features}  menu={menu}/>
+            <Suspense><Navbar features={features} menu={menu} /></Suspense>
             <main className="container mx-auto max-w-7xl px-6 flex-grow">
               {children}
             </main>

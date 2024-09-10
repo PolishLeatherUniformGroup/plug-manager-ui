@@ -3,6 +3,7 @@ import { ApiConfig } from "../config/api";
 import { Applicant } from "../models/applicants";
 import { Fee } from "../models/member-fee";
 import { Member } from "../models/members";
+import { Item, SectionItem } from "../models/section";
 
 
 export type ImportData = {
@@ -238,7 +239,23 @@ export class ApiClient {
 
     }
 
-    async getSections(){
-        
+    async getMenu(language: string): Promise<SectionItem[]> {
+        const url = `${this.baseUrl}/sections/${language}`;
+        let response = await this.get(url);
+        const data = await response.json();
+        const sections = await Promise.all(data.map(async (item: any) => {
+            let children: SectionItem[] = [];
+            console.log(`Pages of :`, pages);
+            const section: SectionItem = {
+                slug: item.slug,
+                name: item.content.name,
+                pages: pages,
+                subSections: children
+            }
+            console.log('Section :', section);
+            return section;
+        }));
+        console.log('Sections :', sections);
+        return sections;
     }
 }
