@@ -128,7 +128,23 @@ export class ApiClient {
 
     }
 
-    public async getApplicant(id: string) {
+    public async getApplicant(id: string) :Promise<Applicant | null> {
+        let url = `${this.baseUrl}/applicants/${id}`;
+        let response = await this.get(url);
+        if (response.ok) {
+            try {
+                let data = await response.json();
+                return this.mapApplicant(data);
+            }
+            catch (e) {
+                throw e;
+            }
+            finally {
+            }
+            //return data.map((item: any) => (this.mapApplicant(item)));
+        } else {
+            return null;
+        }
     }
 
     public async rcommendApplicant(id: string, card: string) {

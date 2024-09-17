@@ -8,13 +8,14 @@ import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, DropdownSection 
 import { Input } from "@nextui-org/input";
 import { DatePicker, useDisclosure, } from "@nextui-org/react";
 import { getLocalTimeZone, parseDate, today } from "@internationalized/date";
-import { Fee, MemberDetailsView } from "../../../app/admin/members/[id]/data";
 import { FeeOverride } from "./member-override-fee";
 import { ApplicationModal } from "../../common/application-modal";
 import { useTranslation } from "react-i18next";
 import { SuspendMember } from "./suspend-member";
 import { ExpellMember } from "./expell-member";
 import { TerminateMember } from "./terminate-member";
+import { Fee } from "@/models/member-fee";
+import { MemberDetailsView } from "@/models/members";
 
 export const feeColumns = [
     { name: "Rok", uid: "year", sortable: true },

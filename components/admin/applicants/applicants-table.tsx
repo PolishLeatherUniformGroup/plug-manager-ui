@@ -17,8 +17,8 @@ interface ApplicantsTableProps {
     data: ApplicantItem[];
 }
 
+
 export function ApplicantsTable(props: ApplicantsTableProps) {
-    const router = useRouter();
 
     const [statusFilter, setStatusFilter] = useState<Selection>("all");
     const importMmebersDisclousere = useDisclosure();
@@ -29,7 +29,6 @@ export function ApplicantsTable(props: ApplicantsTableProps) {
     }
     const filterNames = ["status"];
 
-    const data: ApplicantItem[] = [];
     const columns: DataTableColumn[] = [
         { name: "ID", uid: "id", sortable: true },
         { name: 'applicants_name', uid: "name", sortable: true },
